@@ -3,6 +3,13 @@
 // --------------------
 #include	"public.h"
 
+tString*	StringList_New(const char* pChar)
+{
+	tString* firstString = StringList_New_Blank();
+	strcpy(firstString->szText, pChar);
+	return firstString;
+}
+
 tString*	StringList_New_Blank()
 {
 	tString* firstString = (tString*)malloc(sizeof(tString));

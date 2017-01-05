@@ -43,7 +43,7 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	int			nLines_MessageMaster = 9;					// 行数
 	tArea		AreaW_MessageMaster;						// Area(Window全体）
 	tArea		AreaT_MessageMaster;						// Area(Text部分）
-	tString*	pTextList_MessageMaster;					// テキストリスト
+	tString*	pTextList_MessageMaster;					// メッセージリスト
 	// -------
 	// 画面クリア
 	// ------
@@ -70,13 +70,9 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	// --------
 	// メッセージの作成
 	// --------
-	// StringListの新規作成
-	pTextList_MessageMaster = StringList_New_Blank();
-	// 現在位置初期化
-	pCur_Str = pTextList_MessageMaster;
-	strcpy(pCur_Str->szText, "なかまを　およびに　なるのですね");
-	pCur_Str = StringList_Add(pCur_Str, "なんにん　およびに　なりますか？", true);
-	pTextList_MessageMaster = StringList_First(pCur_Str);
+	pCur_Str = StringList_New("なかまを　およびに　なるのですね");					// 新規作成
+	pCur_Str = StringList_Add(pCur_Str, "なんにん　およびに　なりますか？", true);	// 追加
+	pTextList_MessageMaster = StringList_First(pCur_Str);						// メッセージリスト変数に渡す
 	// --------
 	// メッセージの表示
 	// --------
