@@ -58,21 +58,28 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	// --------------------
 	// マスタメッセージ　表示
 	// --------------------
+	// --------
 	// 枠線の表示
-	ptCur_Draw = ptStart_MessageMaster;
+	// --------
+	// 描画現在位置を原点へ
+	ptCur_Draw = ptStart_MessageMaster;	
+	// 罫線ウインドウの表示
 	AreaW_MessageMaster = DrawBorderWindow(&ptCur_Draw, true, nLen_MessageMaster, nLines_MessageMaster);
+	// 文字列Areaの所得
 	AreaT_MessageMaster = Area_Inside_BorderWindow(&AreaW_MessageMaster);
-
-	// マスタメッセージの作成
-	// ※１行で文字列の代入と追加一度に行う関数の実装
+	// --------
+	// メッセージの作成
+	// --------
+	// StringListの新規作成
 	pTextList_MessageMaster = StringList_New();
+	// 現在位置初期化
 	pCur_Str = pTextList_MessageMaster;
 	strcpy(pCur_Str->szText, "なかまを　およびに　なるのですね");
 	pCur_Str = StringList_Add(pCur_Str, "なんにん　およびに　なりますか？", true);
 	pTextList_MessageMaster = StringList_First(pCur_Str);
-
-	// マスタメッセージの描画
-	// ここで直接whileを回すか、完全に表示部分だけは関数を使うか。
+	// --------
+	// メッセージの表示
+	// --------
 	ptCur_Draw = AreaT_MessageMaster.start;
 	pCur_Str = pTextList_MessageMaster;
 
