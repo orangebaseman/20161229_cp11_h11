@@ -469,7 +469,7 @@ int		ResizeStringLine(tString* pStrLine, int nMaxLen)
 		// 行数インクリメント
 		nAddedLines++;
 		// Listに追加
-		pNewLine = StringList_Add(pStrLine, false);
+		pNewLine = StringList_Add_Blank(pStrLine, false);
 		// 追加行の文字列：nLenMax+1番目から残りすべて（nLen-nLenMax文字）をコピー
 		Copy_String_From_Certain(pNewLine->szText, pStrLine->szText, nMaxLen + 1, nLen - nMaxLen);
 		// 現在の文字列：最初からnLenMax文字分にトリミング
@@ -562,7 +562,7 @@ tString* ResizeStringList_By_LengthAndLines(tString* pDest, tString* pSource, in
 				// --------------------
 				// 次の行あり
 				// --------------------
-				pCur_D = StringList_Add(pCur_D, false);		// 新規作成
+				pCur_D = StringList_Add_Blank(pCur_D, false);		// 新規作成
 				pCur_S = pCur_S->next;						// 次へ（参照文字列）
 			}
 			else
@@ -638,7 +638,7 @@ tString* ResizeStringList_By_LengthAndLines(tString* pDest, tString* pSource, in
 				// --------------------
 				// 次の行あり
 				// --------------------
-				pCur_D = StringList_Add(pCur_D, false);		// 新規作成
+				pCur_D = StringList_Add_Blank(pCur_D, false);		// 新規作成
 				pCur_S = pCur_S->prev;						// 前へ（参照文字列）
 			}
 			else

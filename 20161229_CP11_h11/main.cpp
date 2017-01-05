@@ -24,9 +24,9 @@ void main(void)
 	// test
 	tString* sList = StringList_New();
 	strcpy(sList->szText, "‚P‚¬‚å‚¤‚ß‚Q‚¬‚å‚¤‚ß‚R‚¬‚å‚¤");
-	sList = StringList_Add(sList, true);
+	sList = StringList_Add_Blank(sList, true);
 	strcpy(sList->szText, "‚S‚¬‚å‚¤‚ß‚T‚¬‚å‚¤‚ß‚U‚¬‚å‚¤");
-	sList= StringList_Add(sList, true);
+	sList= StringList_Add_Blank(sList, true);
 	strcpy(sList->szText, "‚V‚¬‚å‚¤‚ß‚W‚¬‚å‚¤‚ß‚X‚¬‚å‚¤");
 	tString* pTextList = StringList_New();
 	

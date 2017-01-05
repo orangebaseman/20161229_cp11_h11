@@ -18,7 +18,7 @@ tString*	StringList_New()
 	firstString->next = NULL;
 	return firstString;
 }
-tString*	StringList_Add(tString* pStr, bool isAddToLast)
+tString*	StringList_Add_Blank(tString* pStr, bool isAddToLast)
 {
 	tString* newStr;
 	if (isAddToLast)
@@ -28,7 +28,7 @@ tString*	StringList_Add(tString* pStr, bool isAddToLast)
 	newStr = (tString*)malloc(sizeof(tString));
 	if (newStr == NULL)
 	{
-		printf("ÉÅÉÇÉäämï€é∏îs(malloc error on StringList_Add)");
+		printf("ÉÅÉÇÉäämï€é∏îs(malloc error on StringList_Add_Blank)");
 		rewind(stdin);
 		getchar();
 		exit(EXIT_FAILURE);

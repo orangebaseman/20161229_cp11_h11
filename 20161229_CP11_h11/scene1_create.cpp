@@ -11,11 +11,9 @@ int		DisplayMasterMessage_CreateScene(const int*, int*, int, int);					// キャラ
 int		DisplayAndCreatePartyMember_CreateScene(tCharacter*, const tJob*, int, int);	// キャラクター作成シーン_表示（マスタメッセージ）
 int		DisplayCantAddMessage_CreateScene(int, int);									// キャラクター作成シーン_
 
-
 // --------------------
 // 関数実装部
 // --------------------
-
 // 【関数内容】
 // キャラクター作成シーン_シーン実行
 // 【引数】
@@ -68,7 +66,7 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	// ※１行で文字列の代入と追加一度に行う関数の実装
 	pTextList_MessageMaster = StringList_New();
 	strcpy(pTextList_MessageMaster->szText, "なかまを　およびに　なるのですね");
-	pTextList_MessageMaster = StringList_Add(pTextList_MessageMaster, true);
+	pTextList_MessageMaster = StringList_Add_Blank(pTextList_MessageMaster, true);
 	strcpy(pTextList_MessageMaster->szText, "なんにん　およびに　なりますか？");
 	pTextList_MessageMaster = StringList_First(pTextList_MessageMaster);
 
