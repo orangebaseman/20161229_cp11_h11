@@ -145,6 +145,7 @@ void		CharacterList_DeleteAll(tCharacter*);						// CharacterListëSçÌèú
 // list_tString.cpp
 tString*	StringList_New();
 tString*	StringList_Add_Blank(tString*, bool);
+tString*	StringList_Add(tString* pStr, const char* pChar, bool isAddToLast);
 void		StringList_Delete(tString*);
 void		StringList_DeleteAll(tString*);
 tString*	StringList_First(tString*);
@@ -162,6 +163,7 @@ void	Copy_String_From_Certain(char*, const char*, int, int);
 
 // ï\é¶ï‚èï
 // helper_display.cpp
+void	gotoxy_pt(tPoint2D point);
 void	ClearArea(const tArea*);
 tArea	DrawBorderWindow(tPoint2D*, bool, const size_t, const size_t);	//
 tArea	Area_Inside_BorderWindow(const tArea*);

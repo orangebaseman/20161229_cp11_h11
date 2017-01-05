@@ -30,7 +30,8 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	// ローカル変数宣言、初期化
 	// --------------------
 	int x, y = 2, tempY;				// 描画XY座標
-	tPoint2D	ptCur = { 1, 1 };		// 描画現在位置
+	tPoint2D	ptCur_Draw = { 1, 1 };	// 描画現在位置
+	tString*	pCur_Str;				// StringListの現在位置
 	int i;								// ループカウンタ
 	int nAdd = 1;						// 作成（追加）人数
 	tCharacter* pCh = pCharacterList;	// キャラクター構造体ポインタ
@@ -58,30 +59,31 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	// マスタメッセージ　表示
 	// --------------------
 	// 枠線の表示
-	ptCur = ptStart_MessageMaster;
-	AreaW_MessageMaster = DrawBorderWindow(&ptCur, true, nLen_MessageMaster, nLines_MessageMaster);
+	ptCur_Draw = ptStart_MessageMaster;
+	AreaW_MessageMaster = DrawBorderWindow(&ptCur_Draw, true, nLen_MessageMaster, nLines_MessageMaster);
 	AreaT_MessageMaster = Area_Inside_BorderWindow(&AreaW_MessageMaster);
 
 	// マスタメッセージの作成
 	// ※１行で文字列の代入と追加一度に行う関数の実装
 	pTextList_MessageMaster = StringList_New();
-	strcpy(pTextList_MessageMaster->szText, "なかまを　およびに　なるのですね");
-	pTextList_MessageMaster = StringList_Add_Blank(pTextList_MessageMaster, true);
-	strcpy(pTextList_MessageMaster->szText, "なんにん　およびに　なりますか？");
-	pTextList_MessageMaster = StringList_First(pTextList_MessageMaster);
+	pCur_Str = pTextList_MessageMaster;
+	strcpy(pCur_Str->szText, "なかまを　およびに　なるのですね");
+	pCur_Str = StringList_Add(pCur_Str, "なんにん　およびに　なりますか？", true);
+	pTextList_MessageMaster = StringList_First(pCur_Str);
 
 	// マスタメッセージの描画
 	// ここで直接whileを回すか、完全に表示部分だけは関数を使うか。
-	ptCur = AreaT_MessageMaster.start;
+	ptCur_Draw = AreaT_MessageMaster.start;
+	pCur_Str = pTextList_MessageMaster;
 
-	while (pTextList_MessageMaster != NULL)
+	while (pCur_Str != NULL)
 	{
-		gotoxy(ptCur.x , ptCur.y);
-		printf(pTextList_MessageMaster->szText);
-		if (ptCur.y <= AreaW_MessageMaster.end.y && pTextList_MessageMaster->next != NULL)
+		gotoxy_pt(ptCur_Draw);
+		printf(pCur_Str->szText);
+		if (ptCur_Draw.y <= AreaT_MessageMaster.end.y && pTextList_MessageMaster->next != NULL)
 		{
-			ptCur.y += 1;
-			pTextList_MessageMaster = pTextList_MessageMaster->next;
+			ptCur_Draw.y += 1;
+			pCur_Str = pCur_Str->next;
 		}
 		else
 		{

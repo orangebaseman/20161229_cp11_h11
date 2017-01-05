@@ -18,6 +18,12 @@ tString*	StringList_New()
 	firstString->next = NULL;
 	return firstString;
 }
+tString*	StringList_Add(tString* pStr, const char* pChar, bool isAddToLast)
+{
+	tString *pNewStr = StringList_Add_Blank(pStr, isAddToLast);
+	strcpy(pNewStr->szText, pChar);
+	return pNewStr;
+}
 tString*	StringList_Add_Blank(tString* pStr, bool isAddToLast)
 {
 	tString* newStr;
