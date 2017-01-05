@@ -76,20 +76,25 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	// --------
 	// メッセージの表示
 	// --------
+	// 現在位置の更新
 	ptCur_Draw = AreaT_MessageMaster.start;
 	pCur_Str = pTextList_MessageMaster;
-
+	// 描画実行（１行目にメッセージがなければ終了）
 	while (pCur_Str != NULL)
 	{
+		// 移動、描画
 		gotoxy_pt(ptCur_Draw);
 		printf(pCur_Str->szText);
+		// 描画を続けるか（次の行が描画範囲内かどうか、次のメッセージの有無で判定）
 		if (ptCur_Draw.y <= AreaT_MessageMaster.end.y && pTextList_MessageMaster->next != NULL)
 		{
-			ptCur_Draw.y += 1;
-			pCur_Str = pCur_Str->next;
+			// 次の行あり（情報を更新）
+			ptCur_Draw.y += 1;			// 描画位置を次の行へ
+			pCur_Str = pCur_Str->next;	// 表示メッセージを次へ
 		}
 		else
 		{
+			// 次の行なし（終了）
 			break;
 		}
 	}
