@@ -441,32 +441,6 @@ void	DisplayJobList(const tJob* pJobList, int x_start, int y_start, int* x_end, 
 }
 
 // 【関数内容】
-// 職業一覧を非表示
-// 【引数】
-// x_start	: 【閲覧用　】描画原点（左上）
-// y_start	: 【閲覧用　】描画原点（左上）
-// x_end	: 【閲覧用　】描画終了位置座標（右下）
-// y_end	: 【閲覧用　】描画終了位置座標（右下）
-// 【戻り値】
-// なし
-//void	ClearJobList(int x_start, int y_start, int x_end, int y_end)
-//{
-//	 --------------------
-//	 x_start - x_end
-//	 y_start - y_end までをクリア
-//	 --------------------
-//	int x, y;
-//	for (x = x_start; x <= x_end; x++)
-//	{
-//		for (y = y_start; y <= y_end; y++)
-//		{
-//			gotoxy(x, y);
-//			printf(" ");
-//		}
-//	}
-//}
-
-// 【関数内容】
 // 文字列を指定文字数でリサイズ
 // （オーバーしたらtStringを分割し、Listに追加）
 // 【引数】
@@ -691,33 +665,3 @@ tString* ResizeStringList_By_tArea(tString* pDest, tString* pSource, tArea area,
 	int nLines = area.end.y - area.start.y + 1;
 	return ResizeStringList_By_LengthAndLines(pDest, pSource, order, nStart, nLength, nLines);
 }
-
-void showTextinArea(tString* pMessageList, tArea area)
-{
-	tString* pDispList = StringList_New();
-	tPoint2D ptCur = area.start;
-	pDispList = ResizeStringList_By_tArea(pDispList, pMessageList, area, START_FROM_LAST, 1);
-	while (pDispList !=NULL || ptCur.y <= area.end.y)
-	{
-		gotoxy_pt(ptCur);
-		printf(pDispList->szText);
-		if (pDispList->next != NULL || ptCur.y + NEXT_LINE <= area.end.y)
-		{
-			pDispList = pDispList->next;
-			ptCur.y += NEXT_LINE;
-		}
-	}
-}
-
-
-void ShowTextinWindow(tString* pMessageList, tArea area)
-{
-	tArea textArea = area;
-	textArea.start.x += SIZE_OF_BORDER;
-	textArea.start.y += NEXT_LINE;
-	textArea.end.x -= SIZE_OF_BORDER;
-	textArea.end.y -= PREVIOUS_LINE;
-
-	showTextinArea(pMessageList, textArea);
-}
-
