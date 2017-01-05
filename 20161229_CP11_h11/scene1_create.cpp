@@ -71,7 +71,7 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	// メッセージの作成
 	// --------
 	// StringListの新規作成
-	pTextList_MessageMaster = StringList_New();
+	pTextList_MessageMaster = StringList_New_Blank();
 	// 現在位置初期化
 	pCur_Str = pTextList_MessageMaster;
 	strcpy(pCur_Str->szText, "なかまを　およびに　なるのですね");

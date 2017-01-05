@@ -3,13 +3,12 @@
 // --------------------
 #include	"public.h"
 
-
-tString*	StringList_New()
+tString*	StringList_New_Blank()
 {
 	tString* firstString = (tString*)malloc(sizeof(tString));
 	if (firstString == NULL)
 	{
-		printf("ƒƒ‚ƒŠŠm•Û¸”s(malloc error on StringList_New)");
+		printf("ƒƒ‚ƒŠŠm•Û¸”s(malloc error on StringList_New_Blank)");
 		rewind(stdin);
 		getchar();
 		exit(EXIT_FAILURE);

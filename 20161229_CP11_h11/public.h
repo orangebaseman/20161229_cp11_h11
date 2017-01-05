@@ -143,7 +143,7 @@ void		CharacterList_DeleteAll(tCharacter*);						// CharacterList全削除
 
 // リスト構造：tString
 // list_tString.cpp
-tString*	StringList_New();
+tString*	StringList_New_Blank();
 tString*	StringList_Add_Blank(tString*, bool);
 tString*	StringList_Add(tString* pStr, const char* pChar, bool isAddToLast);
 void		StringList_Delete(tString*);
