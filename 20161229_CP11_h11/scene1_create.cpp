@@ -29,26 +29,25 @@ int		DisplayCantAddMessage_CreateScene(int, int);									// ƒLƒƒƒ‰ƒNƒ^[ì¬ƒV
 void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInCharaList, const tJob* pJobList, int* pNumMember, int nNumBuiltIn)
 {
 	// --------------------
-	// ƒ[ƒJƒ‹•Ï”éŒ¾
+	// ƒ[ƒJƒ‹•Ï”éŒ¾A‰Šú‰»
 	// --------------------
-	int x, y, tempY;					// •`‰æXYÀ•W
-	tPoint2D	ptCur;
+	int x, y = 2, tempY;				// •`‰æXYÀ•W
+	tPoint2D	ptCur = { 1, 1 };		// •`‰æŒ»İˆÊ’u
 	int i;								// ƒ‹[ƒvƒJƒEƒ“ƒ^
-	int nAdd;							// ì¬i’Ç‰Ájl”
+	int nAdd = 1;						// ì¬i’Ç‰Ájl”
 	tCharacter* pCh = pCharacterList;	// ƒLƒƒƒ‰ƒNƒ^[\‘¢‘Ìƒ|ƒCƒ“ƒ^
 	// -------
-	// ƒ}ƒXƒ^ƒƒbƒZ[ƒW•”
+	// ƒ}ƒXƒ^ƒƒbƒZ[ƒW•”@•Ï”
 	// ------
 	tPoint2D	ptStart_MessageMaster = { 1, 1 };			// Œ´“_i¶ãj
 	int			nLen_MessageMaster = MAX_WIDTH_OF_WINDOW;	// ’·‚³
 	int			nLines_MessageMaster = 9;					// s”
-	tArea		pAreaW_MessageMaster;							// Area(Window‘S‘Ìj
-	tArea		pAreaT_MessageMaster;							// Area(Text•”•ªj
-	tString*	pTextList_MessageMaster;						// ƒeƒLƒXƒgƒŠƒXƒg
-
-	// --------------------
-	// ‰Šú‰»
-	// --------------------
+	tArea		pAreaW_MessageMaster;						// Area(Window‘S‘Ìj
+	tArea		pAreaT_MessageMaster;						// Area(Text•”•ªj
+	tString*	pTextList_MessageMaster;					// ƒeƒLƒXƒgƒŠƒXƒg
+	// -------
+	// ‰æ–ÊƒNƒŠƒA
+	// ------
 	clrscr();
 	// ¦l”ƒ`ƒFƒbƒN:@ãŒÀl”‚È‚ç‚ÎƒGƒ‰[•\¦‚ğ‚µ‚ÄƒV[ƒ“I—¹
 	if ((*pNumMember) >= MAX_NUMBER_OF_CHARACTERS)
@@ -57,21 +56,27 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 		getchar();
 		return;
 	}
-	y = 2;
-	nAdd = 1;
-
+	// --------------------
+	// ƒ}ƒXƒ^ƒƒbƒZ[ƒW@•\¦
+	// --------------------
+	// ˜gü‚Ì•\¦
 	ptCur = ptStart_MessageMaster;
 	pAreaW_MessageMaster = DrawBorderWindow(&ptCur, true, nLen_MessageMaster, nLines_MessageMaster);
+	// pAreaT=...¦ƒeƒLƒXƒgƒƒbƒZ[ƒW•”‚ÌŠÖ”À‘•j
 
 	ptCur.x = pAreaW_MessageMaster.start.x + 2;
 	ptCur.y = pAreaW_MessageMaster.start.y + 1;
 
+	// ƒ}ƒXƒ^ƒƒbƒZ[ƒW‚Ìì¬
+	// ¦‚Ps‚Å•¶š—ñ‚Ì‘ã“ü‚Æ’Ç‰Áˆê“x‚És‚¤ŠÖ”‚ÌÀ‘•
 	pTextList_MessageMaster = StringList_New();
 	strcpy(pTextList_MessageMaster->szText, "‚È‚©‚Ü‚ğ@‚¨‚æ‚Ñ‚É@‚È‚é‚Ì‚Å‚·‚Ë");
 	pTextList_MessageMaster = StringList_Add(pTextList_MessageMaster, true);
 	strcpy(pTextList_MessageMaster->szText, "‚È‚ñ‚É‚ñ@‚¨‚æ‚Ñ‚É@‚È‚è‚Ü‚·‚©H");
-	
 	pTextList_MessageMaster = StringList_First(pTextList_MessageMaster);
+
+	// ƒ}ƒXƒ^ƒƒbƒZ[ƒW‚Ì•`‰æ
+	// ‚±‚±‚Å’¼Úwhile‚ğ‰ñ‚·‚©AŠ®‘S‚É•\¦•”•ª‚¾‚¯‚ÍŠÖ”‚ğg‚¤‚©B
 	while (pTextList_MessageMaster != NULL)
 	{
 		gotoxy(ptCur.x , ptCur.y);
@@ -86,8 +91,7 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 			break;
 		}
 	}
-
-	getchar();
+	// Œãˆ—
 	StringList_DeleteAll(pTextList_MessageMaster);
 
 	// --------------------
@@ -97,7 +101,7 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	Clear_Inside_BorderWindow(&pAreaW_MessageMaster);
 
 	// ¦’Ç‰Á‚µ‚È‚¢‚È‚çƒV[ƒ“I—¹
-	if (nAdd <= 0) return;
+	if (nAdd <= 2) return;
 	// --------------------
 	// ƒLƒƒƒ‰ƒNƒ^[ì¬•”
 	// --------------------
