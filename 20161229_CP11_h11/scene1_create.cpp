@@ -36,13 +36,15 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	int i;								// ループカウンタ
 	int nAdd;							// 作成（追加）人数
 	tCharacter* pCh = pCharacterList;	// キャラクター構造体ポインタ
-
-	tPoint2D	ptStart_MessageMaster = { 1, 1 };
-	int			nLen_MessageMaster = MAX_WIDTH_OF_WINDOW;
-	int			nLines_MessageMaster = 9;
-	tArea		MesMaster_AreaW;
-	tArea		MesMaster_AreaT;
-	tString*	MesMaster_pTextList;
+	// -------
+	// マスタメッセージ部
+	// ------
+	tPoint2D	ptStart_MessageMaster = { 1, 1 };			// 原点（左上）
+	int			nLen_MessageMaster = MAX_WIDTH_OF_WINDOW;	// 長さ
+	int			nLines_MessageMaster = 9;					// 行数
+	tArea		pAreaW_MessageMaster;							// Area(Window全体）
+	tArea		pAreaT_MessageMaster;							// Area(Text部分）
+	tString*	pTextList_MessageMaster;						// テキストリスト
 
 	// --------------------
 	// 初期化
@@ -59,25 +61,25 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	nAdd = 1;
 
 	ptCur = ptStart_MessageMaster;
-	MesMaster_AreaW = DrawBorderWindow(&ptCur, true, nLen_MessageMaster, nLines_MessageMaster);
+	pAreaW_MessageMaster = DrawBorderWindow(&ptCur, true, nLen_MessageMaster, nLines_MessageMaster);
 
-	ptCur.x = MesMaster_AreaW.start.x + 2;
-	ptCur.y = MesMaster_AreaW.start.y + 1;
+	ptCur.x = pAreaW_MessageMaster.start.x + 2;
+	ptCur.y = pAreaW_MessageMaster.start.y + 1;
 
-	MesMaster_pTextList = StringList_New();
-	strcpy(MesMaster_pTextList->szText, "なかまを　およびに　なるのですね");
-	MesMaster_pTextList = StringList_Add(MesMaster_pTextList, true);
-	strcpy(MesMaster_pTextList->szText, "なんにん　およびに　なりますか？");
+	pTextList_MessageMaster = StringList_New();
+	strcpy(pTextList_MessageMaster->szText, "なかまを　およびに　なるのですね");
+	pTextList_MessageMaster = StringList_Add(pTextList_MessageMaster, true);
+	strcpy(pTextList_MessageMaster->szText, "なんにん　およびに　なりますか？");
 	
-	MesMaster_pTextList = StringList_First(MesMaster_pTextList);
-	while (MesMaster_pTextList != NULL)
+	pTextList_MessageMaster = StringList_First(pTextList_MessageMaster);
+	while (pTextList_MessageMaster != NULL)
 	{
 		gotoxy(ptCur.x , ptCur.y);
-		printf(MesMaster_pTextList->szText);
-		if (ptCur.y <= MesMaster_AreaW.end.y && MesMaster_pTextList->next != NULL)
+		printf(pTextList_MessageMaster->szText);
+		if (ptCur.y <= pAreaW_MessageMaster.end.y && pTextList_MessageMaster->next != NULL)
 		{
 			ptCur.y += 1;
-			MesMaster_pTextList = MesMaster_pTextList->next;
+			pTextList_MessageMaster = pTextList_MessageMaster->next;
 		}
 		else
 		{
@@ -86,13 +88,13 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	}
 
 	getchar();
-	StringList_DeleteAll(MesMaster_pTextList);
+	StringList_DeleteAll(pTextList_MessageMaster);
 
 	// --------------------
 	// キャラクター作成人数　入力
 	// --------------------
 	//y = DisplayMasterMessage_CreateScene(pNumMember, &nAdd, 2, 2);
-	Clear_Inside_BorderWindow(&MesMaster_AreaW);
+	Clear_Inside_BorderWindow(&pAreaW_MessageMaster);
 
 	// ※追加しないならシーン終了
 	if (nAdd <= 0) return;
