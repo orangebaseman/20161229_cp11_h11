@@ -51,16 +51,15 @@ void	ClearArea(const tArea* area)
 	}
 }
 
-void	Clear_Inside_BorderWindow(const tArea* area)
+tArea Area_Inside_BorderWindow(const tArea* area)
 {
-	tArea textArea = (*area);
-	textArea.start.x += SIZE_OF_BORDER;
-	textArea.start.y += NEXT_LINE;
-	textArea.end.x -= SIZE_OF_BORDER;
-	textArea.end.y -= PREVIOUS_LINE;
-	ClearArea(&textArea);
+	tArea area_inside = (*area);
+	area_inside.start.x += SIZE_OF_BORDER;
+	area_inside.start.y += NEXT_LINE;
+	area_inside.end.x -= SIZE_OF_BORDER;
+	area_inside.end.y -= PREVIOUS_LINE;
+	return area_inside;
 }
-
 
 // 【関数内容】
 // 罫線ウインドウ　空白行の描画

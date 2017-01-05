@@ -42,8 +42,8 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	tPoint2D	ptStart_MessageMaster = { 1, 1 };			// 原点（左上）
 	int			nLen_MessageMaster = MAX_WIDTH_OF_WINDOW;	// 長さ
 	int			nLines_MessageMaster = 9;					// 行数
-	tArea		pAreaW_MessageMaster;						// Area(Window全体）
-	tArea		pAreaT_MessageMaster;						// Area(Text部分）
+	tArea		AreaW_MessageMaster;						// Area(Window全体）
+	tArea		AreaT_MessageMaster;						// Area(Text部分）
 	tString*	pTextList_MessageMaster;					// テキストリスト
 	// -------
 	// 画面クリア
@@ -61,11 +61,8 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	// --------------------
 	// 枠線の表示
 	ptCur = ptStart_MessageMaster;
-	pAreaW_MessageMaster = DrawBorderWindow(&ptCur, true, nLen_MessageMaster, nLines_MessageMaster);
-	// pAreaT=...※テキストメッセージ部の関数実装）
-
-	ptCur.x = pAreaW_MessageMaster.start.x + 2;
-	ptCur.y = pAreaW_MessageMaster.start.y + 1;
+	AreaW_MessageMaster = DrawBorderWindow(&ptCur, true, nLen_MessageMaster, nLines_MessageMaster);
+	AreaT_MessageMaster = Area_Inside_BorderWindow(&AreaW_MessageMaster);
 
 	// マスタメッセージの作成
 	// ※１行で文字列の代入と追加一度に行う関数の実装
@@ -77,11 +74,13 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 
 	// マスタメッセージの描画
 	// ここで直接whileを回すか、完全に表示部分だけは関数を使うか。
+	ptCur = AreaT_MessageMaster.start;
+
 	while (pTextList_MessageMaster != NULL)
 	{
 		gotoxy(ptCur.x , ptCur.y);
 		printf(pTextList_MessageMaster->szText);
-		if (ptCur.y <= pAreaW_MessageMaster.end.y && pTextList_MessageMaster->next != NULL)
+		if (ptCur.y <= AreaW_MessageMaster.end.y && pTextList_MessageMaster->next != NULL)
 		{
 			ptCur.y += 1;
 			pTextList_MessageMaster = pTextList_MessageMaster->next;
@@ -98,7 +97,7 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	// キャラクター作成人数　入力
 	// --------------------
 	//y = DisplayMasterMessage_CreateScene(pNumMember, &nAdd, 2, 2);
-	Clear_Inside_BorderWindow(&pAreaW_MessageMaster);
+	ClearArea(&AreaT_MessageMaster);
 
 	// ※追加しないならシーン終了
 	if (nAdd <= 2) return;

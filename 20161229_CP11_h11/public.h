@@ -164,11 +164,10 @@ void	Copy_String_From_Certain(char*, const char*, int, int);
 // helper_display.cpp
 void	ClearArea(const tArea*);
 tArea	DrawBorderWindow(tPoint2D*, bool, const size_t, const size_t);	//
-void	Clear_Inside_BorderWindow(const tArea*);
+tArea	Area_Inside_BorderWindow(const tArea*);
 int		DisplayStatusHeader(int, int);									//
 int		DisplayStatusBlank(int, int, bool);								//
 void	DisplayJobList(const tJob*, int, int, int*, int*);				// 
-/*void	ClearJobList(int, int, int, int);				*/				// 
 int		ResizeStringLine(tString* pStrLine, int nMaxLen);
 tString* ResizeStringList(tString* , tString* , int, int , int, int);
 void ShowTextinWindow(tString* pMessageList, tArea area);
