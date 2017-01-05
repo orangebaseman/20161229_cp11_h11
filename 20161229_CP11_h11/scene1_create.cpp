@@ -72,21 +72,23 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	// --------
 	pCur_Str = StringList_New("なかまを　およびに　なるのですね");					// 新規作成
 	pCur_Str = StringList_Add(pCur_Str, "なんにん　およびに　なりますか？", true);	// 追加
-	pTextList_MessageMaster = StringList_First(pCur_Str);						// メッセージリスト変数に渡す
+	//pCur_Str = StringList_First(pCur_Str);										// リストの最初へ
+	pTextList_MessageMaster = ResizeStringList_By_tArea(pCur_Str, pCur_Str,
+		AreaT_MessageMaster, START_FROM_LAST, 1);
 	// --------
 	// メッセージの表示
 	// --------
 	// 現在位置の更新
 	ptCur_Draw = AreaT_MessageMaster.start;
 	pCur_Str = pTextList_MessageMaster;
-	// 描画実行（１行目にメッセージがなければ終了）
-	while (pCur_Str != NULL)
+	// 描画実行（１行目で条件を満たしていなければ、描画しない）
+	while (ptCur_Draw.y <= AreaT_MessageMaster.end.y && pTextList_MessageMaster != NULL)
 	{
 		// 移動、描画
 		gotoxy_pt(ptCur_Draw);
 		printf(pCur_Str->szText);
 		// 描画を続けるか（次の行が描画範囲内かどうか、次のメッセージの有無で判定）
-		if (ptCur_Draw.y <= AreaT_MessageMaster.end.y && pTextList_MessageMaster->next != NULL)
+		if (ptCur_Draw.y + 1 <= AreaT_MessageMaster.end.y && pTextList_MessageMaster->next != NULL)
 		{
 			// 次の行あり（情報を更新）
 			ptCur_Draw.y += 1;			// 描画位置を次の行へ
@@ -94,7 +96,7 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 		}
 		else
 		{
-			// 次の行なし（終了）
+			// 次の行なし（描画終了）
 			break;
 		}
 	}
