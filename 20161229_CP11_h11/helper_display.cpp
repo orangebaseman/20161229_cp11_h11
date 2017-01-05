@@ -51,6 +51,12 @@ void	ClearArea(const tArea* area)
 	}
 }
 
+// 【関数内容】
+// 罫線ウインドウ　内側の描画範囲を取得
+// 【引数】
+// area	: 【閲覧用　】罫線ウインドウの描画範囲範囲
+// 【戻り値】
+//  罫線ウインドウ　内側の描画範囲
 tArea Area_Inside_BorderWindow(const tArea* area)
 {
 	tArea area_inside = (*area);
