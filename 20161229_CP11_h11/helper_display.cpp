@@ -532,14 +532,21 @@ int		ResizeStringLine(tString* pStrLine, int nMaxLen)
 void ResizeStringList_By_LengthAndLines(tString* pDest, tString* pSource, int order, int nStart, int nMaxLen, int nMaxLines)
 {
 	// --------------------
-	// ローカル変数宣言、初期化
+	// ローカル変数宣言
 	// --------------------
 	tString* pStart_S;			// 参照開始行
 	tString* pCur_S;			// 現在地（参照文字列）
-	tString* pCur_D = pDest;	// 現在地（表示文字列）
+	tString* pCur_D;			// 現在地（表示文字列）
 	int nLines = 0;				// 行数
 	int i;						// ループカウンタ
 	int nAddLine = 0;			// 追加行数
+	// --------------------
+	// 初期化
+	// --------------------
+	// 表示文字列初期化
+	StringList_DeleteAll(pDest);
+	pDest = StringList_New_Blank();
+	pCur_D = pDest;
 	// --------------------
 	// 最初から次へ
 	// --------------------
