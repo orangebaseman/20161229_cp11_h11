@@ -325,7 +325,7 @@ void DrawTextList_Plain(tArea AreaDisp, tString* pTextList, tPoint2D* ptCur_Draw
 {
 	// 現在位置の更新
 	(*ptCur_Draw) = AreaDisp.start;
-	tString* pCur_Str = pTextList;
+	tString* pCur_Str = StringList_First(pTextList);
 	// 描画実行（１行目で条件を満たしていなければ、描画しない）
 	while (ptCur_Draw->y <= AreaDisp.end.y && pCur_Str != NULL)
 	{
@@ -529,7 +529,7 @@ int		ResizeStringLine(tString* pStrLine, int nMaxLen)
 // nMaxLines: 【参照用　】表示行数
 // 【戻り値】
 // リサイズした文字列リスト
-void ResizeStringList_By_LengthAndLines(tString* pDest, tString* pSource, int order, int nStart, int nMaxLen, int nMaxLines)
+tString* ResizeStringList_By_LengthAndLines(tString* pDest, tString* pSource, int order, int nStart, int nMaxLen, int nMaxLines)
 {
 	// --------------------
 	// ローカル変数宣言
@@ -702,12 +702,13 @@ void ResizeStringList_By_LengthAndLines(tString* pDest, tString* pSource, int or
 	// --------------------
 	// リサイズした参照文字列リストを返却
 	// --------------------
-	pDest = StringList_First(pCur_D);
+	pCur_D = StringList_First(pCur_D);
+	return pCur_D;
 }
 
-void ResizeStringList_By_tArea(tString* pDest, tString* pSource, tArea area, int order, int nStart)
+tString* ResizeStringList_By_tArea(tString* pDest, tString* pSource, tArea area, int order, int nStart)
 {
 	int nLength = area.end.x - area.start.x + 1;
 	int nLines = area.end.y - area.start.y + 1;
-	ResizeStringList_By_LengthAndLines(pDest, pSource, order, nStart, nLength, nLines);
+	return ResizeStringList_By_LengthAndLines(pDest, pSource, order, nStart, nLength, nLines);
 }

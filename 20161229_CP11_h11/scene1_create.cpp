@@ -77,7 +77,8 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	pCur_Str = StringList_Add(pCur_Str, "なんにん　およびに　なりますか？", true);	// 追加
 	pTextList_Master_MessageMaster = StringList_First(pCur_Str);				// メッセージリスト（マスタ）に代入
 	// メッセージリスト(表示用）に、メッセージサイズにリサイズして代入
-	ResizeStringList_By_tArea(pTextList_Display_MessageMaster, pTextList_Master_MessageMaster, AreaT_MessageMaster, START_FROM_LAST, 1);
+	pTextList_Display_MessageMaster = 
+		ResizeStringList_By_tArea(pTextList_Display_MessageMaster, pTextList_Master_MessageMaster, AreaT_MessageMaster, START_FROM_LAST, 1);
 	// --------
 	// メッセージの表示
 	// --------
@@ -86,11 +87,22 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	// --------------------
 	// キャラクター作成人数　入力
 	// --------------------
-	//y = DisplayMasterMessage_CreateScene(pNumMember, &nAdd, 2, 2);
+	nAdd = InputInteger_pt(0, MAX_NUMBER_OF_CHARACTERS - (*pNumMember), &ptCur_Draw, true);
+
+	pCur_Str = pTextList_Master_MessageMaster;
+	pCur_Str = StringList_Add_Blank(pCur_Str, true);
+	sprintf(pCur_Str->szText, "そうか %2dにん　よびたいのか", nAdd);
+
+	// メッセージリスト(表示用）に、メッセージサイズにリサイズして代入
+	pTextList_Display_MessageMaster = 
+		ResizeStringList_By_tArea(pTextList_Display_MessageMaster, pTextList_Master_MessageMaster, AreaT_MessageMaster, START_FROM_LAST, 1);
 	ClearArea(&AreaT_MessageMaster);
+	DrawTextList_Plain(AreaT_MessageMaster, pTextList_Display_MessageMaster, &ptCur_Draw);
+
+
 
 	// ※追加しないならシーン終了
-	if (nAdd <= 2) return;
+	if (nAdd <= 0) return;
 	// --------------------
 	// キャラクター作成部
 	// --------------------

@@ -156,6 +156,7 @@ tString*	StringList_Last(tString*);
 // 入力補助
 // helper_input.cpp
 int		InputInteger(int*, unsigned int, unsigned int, int, int, bool);	// 整数を変数に入力
+int		InputInteger_pt(unsigned int min, unsigned int max, tPoint2D* ptStart, bool isMinMaxShowed);
 void	InputString(char[], int, int, int);								// 文字列を変数に入力
 void	InputJob(tCharacter*, const tJob*, int, int);					// 職業を選択し、変数に入力
 void	Trim_And_Copy_String(char*, const char*, int);
@@ -173,8 +174,8 @@ int		DisplayStatusHeader(int, int);									//
 int		DisplayStatusBlank(int, int, bool);								//
 void	DisplayJobList(const tJob*, int, int, int*, int*);				// 
 int		ResizeStringLine(tString* pStrLine, int nMaxLen);
-void ResizeStringList(tString* , tString* , int, int , int, int);
-void ResizeStringList_By_tArea(tString* pDest, tString* pSource, tArea area, int order, int nStart);
+tString* ResizeStringList(tString* , tString* , int, int , int, int);
+tString* ResizeStringList_By_tArea(tString* pDest, tString* pSource, tArea area, int order, int nStart);
 void ShowTextinWindow(tString* pMessageList, tArea area);
 
 // メニューシーン

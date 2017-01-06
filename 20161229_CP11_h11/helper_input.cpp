@@ -57,6 +57,15 @@ int		InputInteger(int* pInput, unsigned int min, unsigned int max, int x_start, 
 		}
 	}
 }
+// InputIntegerのオーバーロード
+// 返り値：入力した数値
+int		InputInteger_pt(unsigned int min, unsigned int max, tPoint2D* ptDraw, bool isMinMaxShowed)
+{
+	int nInput;
+	ptDraw->y = InputInteger(&nInput, min, max, ptDraw->x, ptDraw->y, isMinMaxShowed);
+	gotoxy_pt(*ptDraw);
+	return nInput;
+}
 void	InputString(char pInput[], int nMaxLen, int x_start, int y_start)
 {
 	int i;
