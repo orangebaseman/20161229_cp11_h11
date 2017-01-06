@@ -43,7 +43,9 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	int			nLines_MessageMaster = 9;					// 行数
 	tArea		AreaW_MessageMaster;						// Area(Window全体）
 	tArea		AreaT_MessageMaster;						// Area(Text部分）
-	tString*	pTextList_MessageMaster;					// メッセージリスト
+	tString*	pTextList_Master_MessageMaster;				// メッセージリスト(全体）
+	tString*	pTextList_Display_MessageMaster;			// メッセージリスト（表示部分）
+	pTextList_Display_MessageMaster = StringList_New_Blank();
 	// -------
 	// 画面クリア
 	// ------
@@ -72,23 +74,23 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	// --------
 	pCur_Str = StringList_New("なかまを　およびに　なるのですね");					// 新規作成
 	pCur_Str = StringList_Add(pCur_Str, "なんにん　およびに　なりますか？", true);	// 追加
-	//pCur_Str = StringList_First(pCur_Str);										// リストの最初へ
-	pTextList_MessageMaster = ResizeStringList_By_tArea(pCur_Str, pCur_Str,
-		AreaT_MessageMaster, START_FROM_LAST, 1);
+	pTextList_Master_MessageMaster = StringList_First(pCur_Str);				// メッセージリスト（マスタ）に代入
+	// メッセージリスト(表示用）に、メッセージサイズにリサイズして代入
+	ResizeStringList_By_tArea(pTextList_Display_MessageMaster, pTextList_Master_MessageMaster, AreaT_MessageMaster, START_FROM_LAST, 1);
 	// --------
 	// メッセージの表示
 	// --------
 	// 現在位置の更新
 	ptCur_Draw = AreaT_MessageMaster.start;
-	pCur_Str = pTextList_MessageMaster;
+	pCur_Str = pTextList_Display_MessageMaster;
 	// 描画実行（１行目で条件を満たしていなければ、描画しない）
-	while (ptCur_Draw.y <= AreaT_MessageMaster.end.y && pTextList_MessageMaster != NULL)
+	while (ptCur_Draw.y <= AreaT_MessageMaster.end.y && pCur_Str != NULL)
 	{
 		// 移動、描画
 		gotoxy_pt(ptCur_Draw);
 		printf(pCur_Str->szText);
 		// 描画を続けるか（次の行が描画範囲内かどうか、次のメッセージの有無で判定）
-		if (ptCur_Draw.y + 1 <= AreaT_MessageMaster.end.y && pTextList_MessageMaster->next != NULL)
+		if (ptCur_Draw.y + 1 <= AreaT_MessageMaster.end.y && pCur_Str->next != NULL)
 		{
 			// 次の行あり（情報を更新）
 			ptCur_Draw.y += 1;			// 描画位置を次の行へ
@@ -101,7 +103,8 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 		}
 	}
 	// 後処理
-	StringList_DeleteAll(pTextList_MessageMaster);
+	StringList_DeleteAll(pTextList_Display_MessageMaster);
+	StringList_DeleteAll(pTextList_Master_MessageMaster);
 
 	// --------------------
 	// キャラクター作成人数　入力

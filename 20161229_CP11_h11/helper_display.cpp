@@ -494,7 +494,7 @@ int		ResizeStringLine(tString* pStrLine, int nMaxLen)
 // nMaxLines: 【参照用　】表示行数
 // 【戻り値】
 // リサイズした文字列リスト
-tString* ResizeStringList_By_LengthAndLines(tString* pDest, tString* pSource, int order, int nStart, int nMaxLen, int nMaxLines)
+void ResizeStringList_By_LengthAndLines(tString* pDest, tString* pSource, int order, int nStart, int nMaxLen, int nMaxLines)
 {
 	// --------------------
 	// ローカル変数宣言、初期化
@@ -660,13 +660,12 @@ tString* ResizeStringList_By_LengthAndLines(tString* pDest, tString* pSource, in
 	// --------------------
 	// リサイズした参照文字列リストを返却
 	// --------------------
-	pCur_D = StringList_First(pCur_D);
-	return pCur_D;
+	pDest = StringList_First(pCur_D);
 }
 
-tString* ResizeStringList_By_tArea(tString* pDest, tString* pSource, tArea area, int order, int nStart)
+void ResizeStringList_By_tArea(tString* pDest, tString* pSource, tArea area, int order, int nStart)
 {
 	int nLength = area.end.x - area.start.x + 1;
 	int nLines = area.end.y - area.start.y + 1;
-	return ResizeStringList_By_LengthAndLines(pDest, pSource, order, nStart, nLength, nLines);
+	ResizeStringList_By_LengthAndLines(pDest, pSource, order, nStart, nLength, nLines);
 }

@@ -172,8 +172,8 @@ int		DisplayStatusHeader(int, int);									//
 int		DisplayStatusBlank(int, int, bool);								//
 void	DisplayJobList(const tJob*, int, int, int*, int*);				// 
 int		ResizeStringLine(tString* pStrLine, int nMaxLen);
-tString* ResizeStringList(tString* , tString* , int, int , int, int);
-tString* ResizeStringList_By_tArea(tString* pDest, tString* pSource, tArea area, int order, int nStart);
+void ResizeStringList(tString* , tString* , int, int , int, int);
+void ResizeStringList_By_tArea(tString* pDest, tString* pSource, tArea area, int order, int nStart);
 void ShowTextinWindow(tString* pMessageList, tArea area);
 
 // メニューシーン
