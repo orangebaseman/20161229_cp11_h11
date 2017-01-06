@@ -11,6 +11,33 @@ int		DisplayMasterMessage_CreateScene(const int*, int*, int, int);					// キャラ
 int		DisplayAndCreatePartyMember_CreateScene(tCharacter*, const tJob*, int, int);	// キャラクター作成シーン_表示（マスタメッセージ）
 int		DisplayCantAddMessage_CreateScene(int, int);									// キャラクター作成シーン_
 
+// 表示部分の関数化（完成後、helper_Display.cppへ移動）
+void DrawTextList_Plain(tArea AreaDisp, tString* pTextList, tPoint2D* ptCur_Draw)
+{
+	// 現在位置の更新
+	(*ptCur_Draw) = AreaDisp.start;
+	tString* pCur_Str = pTextList;
+	// 描画実行（１行目で条件を満たしていなければ、描画しない）
+	while (ptCur_Draw->y <= AreaDisp.end.y && pCur_Str != NULL)
+	{
+		// 移動、描画
+		gotoxy_pt(*ptCur_Draw);
+		printf(pCur_Str->szText);
+		// 描画を続けるか（次の行が描画範囲内かどうか、次のメッセージの有無で判定）
+		if (ptCur_Draw->y + 1 <= AreaDisp.end.y && pCur_Str->next != NULL)
+		{
+			// 次の行あり（情報を更新）
+			ptCur_Draw->y += 1;			// 描画位置を次の行へ
+			pCur_Str = pCur_Str->next;	// 表示メッセージを次へ
+		}
+		else
+		{
+			// 次の行なし（描画終了）
+			break;
+		}
+	}
+}
+
 // --------------------
 // 関数実装部
 // --------------------
@@ -80,31 +107,7 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	// --------
 	// メッセージの表示
 	// --------
-	// 現在位置の更新
-	ptCur_Draw = AreaT_MessageMaster.start;
-	pCur_Str = pTextList_Display_MessageMaster;
-	// 描画実行（１行目で条件を満たしていなければ、描画しない）
-	while (ptCur_Draw.y <= AreaT_MessageMaster.end.y && pCur_Str != NULL)
-	{
-		// 移動、描画
-		gotoxy_pt(ptCur_Draw);
-		printf(pCur_Str->szText);
-		// 描画を続けるか（次の行が描画範囲内かどうか、次のメッセージの有無で判定）
-		if (ptCur_Draw.y + 1 <= AreaT_MessageMaster.end.y && pCur_Str->next != NULL)
-		{
-			// 次の行あり（情報を更新）
-			ptCur_Draw.y += 1;			// 描画位置を次の行へ
-			pCur_Str = pCur_Str->next;	// 表示メッセージを次へ
-		}
-		else
-		{
-			// 次の行なし（描画終了）
-			break;
-		}
-	}
-	// 後処理
-	StringList_DeleteAll(pTextList_Display_MessageMaster);
-	StringList_DeleteAll(pTextList_Master_MessageMaster);
+	DrawTextList_Plain(AreaT_MessageMaster, pTextList_Display_MessageMaster, &ptCur_Draw);
 
 	// --------------------
 	// キャラクター作成人数　入力
@@ -134,6 +137,10 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 		//tempY = DisplayAndCreatePartyMember_CreateScene(pCh, pJobList, x, y);
 	
 	//y = tempY;
+
+	// 後処理
+	StringList_DeleteAll(pTextList_Display_MessageMaster);
+	StringList_DeleteAll(pTextList_Master_MessageMaster);
 
 	getchar();
 }
