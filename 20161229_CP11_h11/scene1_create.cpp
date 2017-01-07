@@ -60,6 +60,14 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 			+ i * (MAX_CHARACTERS_OF_HERO_NAME + SIZE_OF_BORDER);
 		ptStart_CharacterCreate_Chara[i].y = ptStart_CharacterCreate_Head.y;
 	}
+	// -------
+	// キャラクター作成補助部　変数
+	// ------
+	tPoint2D	ptStart_CharacterCreate_Sub;
+	int			nLen_CharacterCreate_Sub;
+	int			nLines_CharacterCreate_Sub = 15;	// 行数
+	tArea		AreaW_CharacterCreate_Sub;			// Area(Window全体）
+	tArea		AreaT_CharacterCreate_Sub;			// Area(Text部分）
 
 	// -------
 	// 画面クリア
@@ -102,11 +110,11 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	// キャラクター作成人数　入力
 	// --------------------
 	nAdd = InputInteger_pt(0, MAX_NUMBER_OF_CHARACTERS - (*pNumMember), &ptCur_Draw, true);
+	msleep(500);
 
 	pCur_Str = pTextList_Master_MessageMaster;
 	pCur_Str = StringList_Add_Blank(pCur_Str, true);
 	sprintf(pCur_Str->szText, "%2dめい　およびに　なるのですね", nAdd);
-	msleep(500);
 	pCur_Str = StringList_Add(pCur_Str, "しょうしょう　おまちください", true);
 
 	// メッセージリスト(表示用）に、メッセージサイズにリサイズして代入
@@ -128,6 +136,18 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 		isLast = (i == nAdd - 1) ? true : false;
 		DisplayStatusBlank_pt(&ptCur_Draw, isLast);
 	}
+
+	// --------------------
+	// キャラクター作成補助部
+	// --------------------
+	// 初期化
+	ptStart_CharacterCreate_Sub.x = ptStart_CharacterCreate_Chara[nAdd - 1].x + MAX_CHARACTERS_OF_HERO_NAME + SIZE_OF_BORDER + SIZE_OF_BORDER + SIZE_OF_BORDER;
+	ptStart_CharacterCreate_Sub.y = ptStart_CharacterCreate_Head.y;
+	nLen_CharacterCreate_Sub = MAX_WIDTH_OF_WINDOW - ptStart_CharacterCreate_Sub.x - SIZE_OF_BORDER - SIZE_OF_NULL;
+	ptCur_Draw = ptStart_CharacterCreate_Sub;
+
+	AreaW_CharacterCreate_Sub = DrawBorderWindow(&ptCur_Draw, false, 20, nLines_CharacterCreate_Sub);
+	
 
 	// 後処理
 	StringList_DeleteAll(pTextList_Display_MessageMaster);
@@ -173,14 +193,6 @@ int		DisplayAndCreatePartyMember_CreateScene(tCharacter* pCh, const tJob* pJobLi
 
 	gotoxy(x, y); printf(""); y++;
 	tempY = y;
-
-	// --------------------
-	//　組み込みキャラクター選択
-	// --------------------
-	//gotoxy(x, y); printf("┏━━━┳━━━━┓"); y++;
-	//gotoxy(x, y); printf("┃コード┃なまえ　┃"); y++;
-	//gotoxy(x, y); printf("┣━━━╋━━━━┫"); y++;
-
 	// --------------------
 	//　カスタムキャラクター　ステータス入力
 	// --------------------

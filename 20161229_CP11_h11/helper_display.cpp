@@ -59,6 +59,7 @@ void	ClearArea(const tArea* area)
 //  罫線ウインドウ　内側の描画範囲
 tArea Area_Inside_BorderWindow(const tArea* area)
 {
+	// YOU SHOULD ERROR CHECK HERE
 	tArea area_inside = (*area);
 	area_inside.start.x += SIZE_OF_BORDER;
 	area_inside.start.y += NEXT_LINE;
@@ -208,6 +209,8 @@ tArea	DrawBorderWindow(tPoint2D* pPtStart, bool isUpdateCur, const size_t width,
 	// --------------------
 	// ループカウンタ
 	int i;
+	// エラーチェック用
+	bool		isError = false;
 	// 描画座標
 	tPoint2D	ptCur = (*pPtStart);
 	// 全角描画終了座標 
@@ -231,13 +234,25 @@ tArea	DrawBorderWindow(tPoint2D* pPtStart, bool isUpdateCur, const size_t width,
 		printf("DrawBorderWindow ERROR:ウインドウが成立するサイズを入力してください");
 		return area;
 	}
-	if (ptZenkakuEnd.x > MAX_WIDTH_OF_WINDOW - SIZE_OF_HANKAKU_CHARACTER ||
-		ptZenkakuEnd.y > MAX_HEIGHT_OF_WINDOW)
+	if (ptZenkakuEnd.x > MAX_WIDTH_OF_WINDOW - SIZE_OF_HANKAKU_CHARACTER)
 	{
 		gotoxy_pt(ptCur);
-		printf("DrawBorderWindow ERROR:ウインドウの表示枠を超えて入力しようとしています。サイズを確認してください。");
+		printf("DrawBorderWindow ERROR:ウインドウの表示枠を超えて入力しようとしています。幅を確認してください。");
+		ptCur.y++;
+		isError = true;
+	}
+	if (ptZenkakuEnd.y > MAX_HEIGHT_OF_WINDOW)
+	{
+		gotoxy_pt(ptCur);
+		printf("DrawBorderWindow ERROR:ウインドウの表示枠を超えて入力しようとしています。高さを確認してください。");
+		isError = true;
+	}
+
+	if (isError)
+	{
 		return area;
 	}
+
 	// --------------------
 	// 描画
 	// --------------------
