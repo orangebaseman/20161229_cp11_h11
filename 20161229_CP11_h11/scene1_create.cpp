@@ -47,6 +47,13 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	tString*	pTextList_Master_MessageMaster;				// メッセージリスト(全体）
 	tString*	pTextList_Display_MessageMaster;			// メッセージリスト（表示部分）
 	pTextList_Display_MessageMaster = StringList_New_Blank();
+w	// -------
+	// キャラクター作成部　変数
+	// ------
+	tPoint2D	ptStart_CharacterCreate_Head= { 1, 11 };						// 原点（左上）
+	tPoint2D	ptStart_CharacterCreate_Chara[MAX_NUMBER_OF_CHARACTERS];	// 原点（左上）
+	
+
 	// -------
 	// 画面クリア
 	// ------
@@ -95,37 +102,19 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	msleep(500);
 	pCur_Str = StringList_Add(pCur_Str, "しょうしょう　おまちください", true);
 
-
 	// メッセージリスト(表示用）に、メッセージサイズにリサイズして代入
 	pTextList_Display_MessageMaster = 
 		ResizeStringList_By_tArea(pTextList_Display_MessageMaster, pTextList_Master_MessageMaster, AreaT_MessageMaster, START_FROM_LAST, 1);
 	ClearArea(&AreaT_MessageMaster);
 	DrawTextList_Plain(AreaT_MessageMaster, pTextList_Display_MessageMaster, &ptCur_Draw);
 
-
-
 	// ※追加しないならシーン終了
 	if (nAdd <= 0) return;
 	// --------------------
 	// キャラクター作成部
 	// --------------------
-	DisplayStatusHeader(2, y);
-	for (i = 0; i < nAdd; i++)
-	{
-		DisplayStatusBlank(2 + (i + 1) * 10, y, i == nAdd - 1);
-	}
-
-
-		// キャラクター構造体　新規作成
-		//pCh = CharacterList_Add(pCh, pNumMember, true);
-		// 描画X座標
-		//x = 2 + i * 23;
-		// 
-		// 
-		// カスタムキャラクター
-		//tempY = DisplayAndCreatePartyMember_CreateScene(pCh, pJobList, x, y);
-	
-	//y = tempY;
+	ptCur_Draw = ptStart_CharacterCreate_Head;
+	DisplayStatusHeader_PT(&ptCur_Draw);
 
 	// 後処理
 	StringList_DeleteAll(pTextList_Display_MessageMaster);

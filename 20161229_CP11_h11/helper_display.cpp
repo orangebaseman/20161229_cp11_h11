@@ -387,6 +387,12 @@ int		DisplayStatusHeader(int x_start, int y_start)
 	return y;
 }
 
+tPoint2D*	DisplayStatusHeader_PT(tPoint2D* ptStart)
+{
+	ptStart->y = DisplayStatusHeader(ptStart->x, ptStart->y);
+	return ptStart;
+}
+
 // 【関数内容】
 // ステータス　空白版の表示
 // 【引数】

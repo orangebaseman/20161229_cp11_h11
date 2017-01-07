@@ -171,7 +171,8 @@ void	ClearArea(const tArea*);
 tArea	DrawBorderWindow(tPoint2D*, bool, const size_t, const size_t);	//
 tArea	Area_Inside_BorderWindow(const tArea*);
 void DrawTextList_Plain(tArea AreaDisp, tString* pTextList, tPoint2D* ptCur_Draw);
-int		DisplayStatusHeader(int, int);									//
+int		DisplayStatusHeader(int, int);							
+tPoint2D*	DisplayStatusHeader_PT(tPoint2D* ptStart);					//
 int		DisplayStatusBlank(int, int, bool);								//
 void	DisplayJobList(const tJob*, int, int, int*, int*);				// 
 int		ResizeStringLine(tString* pStrLine, int nMaxLen);
