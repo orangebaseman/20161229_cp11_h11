@@ -174,6 +174,7 @@ void DrawTextList_Plain(tArea AreaDisp, tString* pTextList, tPoint2D* ptCur_Draw
 int		DisplayStatusHeader(int, int);							
 tPoint2D*	DisplayStatusHeader_PT(tPoint2D* ptStart);					//
 int		DisplayStatusBlank(int, int, bool);								//
+tPoint2D*	DisplayStatusBlank_pt(tPoint2D* ptStart, bool isLast);
 void	DisplayJobList(const tJob*, int, int, int*, int*);				// 
 int		ResizeStringLine(tString* pStrLine, int nMaxLen);
 tString* ResizeStringList(tString* , tString* , int, int , int, int);

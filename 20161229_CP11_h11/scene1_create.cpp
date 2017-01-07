@@ -33,6 +33,7 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	int x, y = 2, tempY;				// 描画XY座標
 	tPoint2D	ptCur_Draw = { 1, 1 };	// 描画現在位置
 	tString*	pCur_Str;				// StringListの現在位置
+	bool		isLast;
 	int i;								// ループカウンタ
 	int nAdd = 1;						// 作成（追加）人数
 	tCharacter* pCh = pCharacterList;	// キャラクター構造体ポインタ
@@ -51,8 +52,14 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	// キャラクター作成部　変数
 	// ------
 	tPoint2D	ptStart_CharacterCreate_Head= { 1, 11 };						// 原点（左上）
-	tPoint2D	ptStart_CharacterCreate_Chara[MAX_NUMBER_OF_CHARACTERS];	// 原点（左上）
-	
+	tPoint2D	ptStart_CharacterCreate_Chara[MAX_NUMBER_OF_CHARACTERS - 1];	// 原点（左上）
+	for (i = 0; i < MAX_NUMBER_OF_CHARACTERS - 1; i++)
+	{
+		ptStart_CharacterCreate_Chara[i].x = ptStart_CharacterCreate_Head.x
+			+ MAX_CHARACTERS_OF_HERO_NAME + SIZE_OF_BORDER
+			+ i * (MAX_CHARACTERS_OF_HERO_NAME + SIZE_OF_BORDER);
+		ptStart_CharacterCreate_Chara[i].y = ptStart_CharacterCreate_Head.y;
+	}
 
 	// -------
 	// 画面クリア
@@ -115,6 +122,12 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	// --------------------
 	ptCur_Draw = ptStart_CharacterCreate_Head;
 	DisplayStatusHeader_PT(&ptCur_Draw);
+	for (i = 0; i < nAdd; i++)
+	{
+		ptCur_Draw = ptStart_CharacterCreate_Chara[i];
+		isLast = (i == nAdd - 1) ? true : false;
+		DisplayStatusBlank_pt(&ptCur_Draw, isLast);
+	}
 
 	// 後処理
 	StringList_DeleteAll(pTextList_Display_MessageMaster);

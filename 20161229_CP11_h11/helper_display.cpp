@@ -417,7 +417,7 @@ tPoint2D*	DisplayStatusHeader_PT(tPoint2D* ptStart)
 //╂────╂  ╂────┨
 //┃　　　　┃  ┃　　　　┃
 //┻━━━━┻  ┻━━━━┛
-int		DisplayStatusBlank(int x_start, int y_start, bool isLast)
+int			DisplayStatusBlank(int x_start, int y_start, bool isLast)
 {
 	// --------------------
 	// ローカル変数宣言、初期化
@@ -449,6 +449,12 @@ int		DisplayStatusBlank(int x_start, int y_start, bool isLast)
 	// 次の描画位置（Y）を返却
 	// --------------------
 	return y;
+}
+
+tPoint2D*	DisplayStatusBlank_pt(tPoint2D* ptStart, bool isLast)
+{
+	ptStart->y = DisplayStatusBlank(ptStart->x, ptStart->y, isLast);
+	return ptStart;
 }
 
 // 【関数内容】
