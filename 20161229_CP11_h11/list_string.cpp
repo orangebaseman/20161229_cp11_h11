@@ -100,3 +100,20 @@ tString*	StringList_Last(tString* pStr)
 	}
 	return pStr;
 }
+tString*	StringList_Reverse(tString* pStr)
+{
+	tString* pNew = NULL;
+	pStr = StringList_Last(pStr);
+	if (pStr != NULL)
+	{
+		pNew = StringList_New(pStr->szText);
+		
+	}
+	while (pStr->prev != NULL)
+	{
+		pStr = pStr->prev;
+		StringList_Add(pNew, pStr->szText, true);
+	}
+	StringList_DeleteAll(pStr);
+	return StringList_First(pNew);
+}

@@ -698,6 +698,7 @@ tString* ResizeStringList_By_LengthAndLines(tString* pDest, tString* pSource, in
 				break;
 			}
 		}
+		pCur_D = StringList_Reverse(pCur_D);
 	}
 	// --------------------
 	// リサイズした参照文字列リストを返却

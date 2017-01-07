@@ -151,6 +151,7 @@ void		StringList_Delete(tString*);
 void		StringList_DeleteAll(tString*);
 tString*	StringList_First(tString*);
 tString*	StringList_Last(tString*);
+tString*	StringList_Reverse(tString* pStr);
 
 
 // “ü—Í•â•
