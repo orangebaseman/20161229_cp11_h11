@@ -47,7 +47,7 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	tString*	pTextList_Master_MessageMaster;				// メッセージリスト(全体）
 	tString*	pTextList_Display_MessageMaster;			// メッセージリスト（表示部分）
 	pTextList_Display_MessageMaster = StringList_New_Blank();
-w	// -------
+	// -------
 	// キャラクター作成部　変数
 	// ------
 	tPoint2D	ptStart_CharacterCreate_Head= { 1, 11 };						// 原点（左上）
