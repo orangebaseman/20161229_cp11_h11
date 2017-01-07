@@ -91,7 +91,10 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 
 	pCur_Str = pTextList_Master_MessageMaster;
 	pCur_Str = StringList_Add_Blank(pCur_Str, true);
-	sprintf(pCur_Str->szText, "そうか %2dにん　よびたいのか", nAdd);
+	sprintf(pCur_Str->szText, "%2dめい　およびに　なるのですね", nAdd);
+	msleep(500);
+	pCur_Str = StringList_Add(pCur_Str, "しょうしょう　おまちください", true);
+
 
 	// メッセージリスト(表示用）に、メッセージサイズにリサイズして代入
 	pTextList_Display_MessageMaster = 
