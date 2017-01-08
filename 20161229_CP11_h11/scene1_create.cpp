@@ -138,6 +138,7 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	// メッセージ追加
 	pCur_Str = StringList_Add_Blank(pCur_Str, true);
 	sprintf(pCur_Str->szText, "%2d　めい　およびに　なるのですね", nAdd);
+	pCur_Str = StringList_Add(pCur_Str, "しょうしょう　おまちくださいませ", true);
 	// メッセージリスト(表示用）に、メッセージサイズにリサイズして代入
 	pTextList_Display_MessageMaster = 
 		ResizeStringList_By_tArea(pTextList_Display_MessageMaster, pTextList_Master_MessageMaster, AreaT_MessageMaster, START_FROM_LAST, 1);
@@ -222,7 +223,7 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 		gotoxy_pt(ptCur_Draw);
 		nCharacter_Selected = InputInteger_pt(0, j, &ptCur_Draw, true);
 
-		msleep(500);
+		msleep(100);
 
 		// --------------------
 		// キャラクター情報の入力
@@ -337,56 +338,165 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 			ptCur_Draw_Sub.y++;
 			gotoxy_pt(ptCur_Draw_Sub);
 			InputJob_pt(pCur_Chr_D, pJobList, &ptCur_Draw_Sub, &ptStart_JobList);
-			
-			ptCur_Draw.y += NEXT_LINE;											// 改行
-			gotoxy_pt(ptCur_Draw);												// 移動
-			printf(pCur_Chr_D->job.szName);										// 描画
+			// 描画
+			ptCur_Draw.y += NEXT_LINE;											
+			gotoxy_pt(ptCur_Draw);												
+			printf(pCur_Chr_D->job.szName);										
 			// 改行
-			ptCur_Draw.y += NEXT_LINE;											// 改行
+			ptCur_Draw.y += NEXT_LINE;
+			//----------
+			// 補助部　表示クリア
+			//-----------
+			ClearArea(&AreaT_CharacterCreate_Sub);
+			ptCur_Draw_Sub = AreaT_CharacterCreate_Sub.start;
+			gotoxy_pt(ptCur_Draw_Sub);
+			printf("%2d　ばんめのおなかまは？", i + 1);
+			//-----------
 			// HP
-			ptCur_Draw.y += NEXT_LINE;											// 改行
-			gotoxy_pt(ptCur_Draw);												// 移動
+			//-----------
+			// 入力
+			ptCur_Draw_Sub.y += NEXT_LINE;
+			gotoxy_pt(ptCur_Draw_Sub);
+			printf("HP　は　いくつ？");
+			ptCur_Draw_Sub.y += NEXT_LINE;
+			gotoxy_pt(ptCur_Draw_Sub);
+			pCur_Chr_D->nHP_Base = InputInteger_pt(1, 9, &ptCur_Draw_Sub, true);
+			pCur_Chr_D->nHP = CalculateIndivisualStatus(pCur_Chr_D->nHP_Base, pCur_Chr_D->job.nHP, 10);
+			// 描画
+			ptCur_Draw.y += NEXT_LINE;
+			gotoxy_pt(ptCur_Draw);
 			printf("%8d", pCur_Chr_D->nHP);
+			//-----------
 			// SP
+			//-----------
+			// 入力
+			ptCur_Draw_Sub.y += NEXT_LINE;
+			gotoxy_pt(ptCur_Draw_Sub);
+			printf("HP　は　いくつ？");
+			ptCur_Draw_Sub.y += NEXT_LINE;
+			gotoxy_pt(ptCur_Draw_Sub);
+			pCur_Chr_D->nSP_Base = InputInteger_pt(1, 9, &ptCur_Draw_Sub, true);
+			pCur_Chr_D->nSP = CalculateIndivisualStatus(pCur_Chr_D->nSP_Base, pCur_Chr_D->job.nSP, 10);
+			// 描画
 			ptCur_Draw.y += NEXT_LINE;											// 改行
 			gotoxy_pt(ptCur_Draw);												// 移動
 			printf("%8d", pCur_Chr_D->nSP);										// 描画
 			// 改行
 			ptCur_Draw.y += NEXT_LINE;											// 改行
+			//-----------
 			// こうげき
-			ptCur_Draw.y += NEXT_LINE;											// 改行
-			gotoxy_pt(ptCur_Draw);												// 移動
-			printf("%8d", pCur_Chr_D->nAtk);										// 描画
+			//-----------
+			// 入力
+			ptCur_Draw_Sub.y += NEXT_LINE;
+			gotoxy_pt(ptCur_Draw_Sub);
+			printf("こうげき　は　いくつ？");
+			ptCur_Draw_Sub.y += NEXT_LINE;
+			gotoxy_pt(ptCur_Draw_Sub);
+			pCur_Chr_D->nAtk_Base = InputInteger_pt(1, 9, &ptCur_Draw_Sub, true);
+			pCur_Chr_D->nAtk = CalculateIndivisualStatus(pCur_Chr_D->nAtk_Base, pCur_Chr_D->job.nAtk, 3);
+			//描画
+			ptCur_Draw.y += NEXT_LINE;		
+			gotoxy_pt(ptCur_Draw);			
+			printf("%8d", pCur_Chr_D->nAtk);	
+			//-----------
 			// ぼうぎょ
+			//-----------
+			// 入力
+			ptCur_Draw_Sub.y += NEXT_LINE;
+			gotoxy_pt(ptCur_Draw_Sub);
+			printf("ぼうぎょ　は　いくつ？");
+			ptCur_Draw_Sub.y += NEXT_LINE;
+			gotoxy_pt(ptCur_Draw_Sub);
+			pCur_Chr_D->nDef_Base = InputInteger_pt(1, 9, &ptCur_Draw_Sub, true);
+			pCur_Chr_D->nDef = CalculateIndivisualStatus(pCur_Chr_D->nDef_Base, pCur_Chr_D->job.nDef, 3);
 			ptCur_Draw.y += NEXT_LINE;											// 改行
 			gotoxy_pt(ptCur_Draw);												// 移動
 			printf("%8d", pCur_Chr_D->nDef);										// 描画
 			// 改行
 			ptCur_Draw.y += NEXT_LINE;											// 改行
+			//----------
+			// 補助部　表示クリア
+			//-----------
+			msleep(500);
+			ClearArea(&AreaT_CharacterCreate_Sub);
+			ptCur_Draw_Sub = AreaT_CharacterCreate_Sub.start;
+			gotoxy_pt(ptCur_Draw_Sub);
+			printf("%2d　ばんめのおなかまは？", i + 1);
+			//----------
 			// まほこう
-			ptCur_Draw.y += NEXT_LINE;											// 改行
-			gotoxy_pt(ptCur_Draw);												// 移動
-			printf("%8d", pCur_Chr_D->nMAtk);									// 描画
+			//----------
+			// 入力
+			ptCur_Draw_Sub.y += NEXT_LINE;
+			gotoxy_pt(ptCur_Draw_Sub);
+			printf("まほこう　は　いくつ？");
+			ptCur_Draw_Sub.y += NEXT_LINE;
+			gotoxy_pt(ptCur_Draw_Sub);
+			pCur_Chr_D->nMAtk_Base = InputInteger_pt(1, 9, &ptCur_Draw_Sub, true);
+			pCur_Chr_D->nMAtk = CalculateIndivisualStatus(pCur_Chr_D->nMAtk_Base, pCur_Chr_D->job.nMAtk, 3);
+			// 描画
+			ptCur_Draw.y += NEXT_LINE;		
+			gotoxy_pt(ptCur_Draw);			
+			printf("%8d", pCur_Chr_D->nMAtk);
+			//----------
 			// まほぼう
+			//----------
+			// 入力
+			ptCur_Draw_Sub.y += NEXT_LINE;
+			gotoxy_pt(ptCur_Draw_Sub);
+			printf("まほぼう　は　いくつ？");
+			ptCur_Draw_Sub.y += NEXT_LINE;
+			gotoxy_pt(ptCur_Draw_Sub);
+			pCur_Chr_D->nMDef_Base = InputInteger_pt(1, 9, &ptCur_Draw_Sub, true);
+			pCur_Chr_D->nMDef = CalculateIndivisualStatus(pCur_Chr_D->nMDef_Base, pCur_Chr_D->job.nMDef, 3);
+			// 描画
 			ptCur_Draw.y += NEXT_LINE;											// 改行
 			gotoxy_pt(ptCur_Draw);												// 移動
 			printf("%8d", pCur_Chr_D->nMDef);									// 描画
 			// 改行
 			ptCur_Draw.y += NEXT_LINE;											// 改行
+			//----------
 			// すばやさ
+			//----------
+			// 入力
+			ptCur_Draw_Sub.y += NEXT_LINE;
+			gotoxy_pt(ptCur_Draw_Sub);
+			printf("すばやさ　は　いくつ？");
+			ptCur_Draw_Sub.y += NEXT_LINE;
+			gotoxy_pt(ptCur_Draw_Sub);
+			pCur_Chr_D->nSpd_Base = InputInteger_pt(1, 9, &ptCur_Draw_Sub, true);
+			pCur_Chr_D->nSpd = CalculateIndivisualStatus(pCur_Chr_D->nSpd_Base, pCur_Chr_D->job.nSpd, 3);
+			// 描画
 			ptCur_Draw.y += NEXT_LINE;											// 改行
 			gotoxy_pt(ptCur_Draw);												// 移動
 			printf("%8d", pCur_Chr_D->nSpd);										// 描画
+			msleep(500);
 		}
 	}
-	
 
-	
+	// ----------
+	// マスターメッセージ　表示内容更新
+	// ---------
+	// 現在位置をマスタメッセージリストへ
+	pCur_Str = pTextList_Master_MessageMaster;
+	// 空行追加
+	pCur_Str = StringList_Add(pCur_Str, "", true);
+	// メッセージ追加
+	pCur_Str = StringList_Add(pCur_Str, "ありがとう　ございました", true);
+	// メッセージリスト(表示用）に、メッセージサイズにリサイズして代入
+	pTextList_Display_MessageMaster =
+		ResizeStringList_By_tArea(pTextList_Display_MessageMaster, pTextList_Master_MessageMaster, AreaT_MessageMaster, START_FROM_LAST, 1);
+	// メッセージ表示エリアをクリア
+	ClearArea(&AreaT_MessageMaster);
+	// メッセージ表示
+	DrawTextList_Plain(AreaT_MessageMaster, pTextList_Display_MessageMaster, &ptCur_Draw);
+
 	// --------------------
 	// 後処理
 	// --------------------
 	StringList_DeleteAll(pTextList_Display_MessageMaster);
 	StringList_DeleteAll(pTextList_Master_MessageMaster);
+	StringList_DeleteAll(pTextList_Display_CharacterCreate_Sub);
+	StringList_DeleteAll(pTextList_Master_CharacterCreate_Sub);
 
 	getchar();
 }

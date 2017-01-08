@@ -48,7 +48,8 @@ int		InputInteger(int* pInput, unsigned int min, unsigned int max, int x_start, 
 		scanf("%d", pInput);
 		if ((*pInput) >= min && (*pInput) <= max)
 		{
-			return y++;
+			y++;
+			return y;
 		}
 		else
 		{
