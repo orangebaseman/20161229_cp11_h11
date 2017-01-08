@@ -32,8 +32,10 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	// --------------------
 	int x, y = 2, tempY;				// 描画XY座標
 	tPoint2D	ptCur_Draw = { 1, 1 };	// 描画現在位置
+	tPoint2D	ptCur_Draw_Sub = { 1, 1 };
 	tString*	pCur_Str;				// StringListの現在位置
-	const tCharacter*	pCur_Chr;				// CharacterListの現在位置
+	const tCharacter*	pCur_Chr_S;		// CharacterListの現在位置
+	tCharacter*	pCur_Chr_D;				// 
 	bool		isLast;					// 最後かどうか
 	int			i, j;						// ループカウンタ
 	int			nCharacter_Selected;	// 選択キャラ
@@ -174,24 +176,6 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	for (i = 0; i < nAdd; i++)
 	{
 		// ----------
-		// マスターメッセージ　表示内容更新
-		// ---------
-		// 現在位置をマスタメッセージリストへ
-		pCur_Str = pTextList_Master_MessageMaster;
-		// 空行追加
-		pCur_Str = StringList_Add(pCur_Str, "", true);
-		// メッセージ追加
-		pCur_Str = StringList_Add_Blank(pCur_Str, true);
-		sprintf(pCur_Str->szText, "%2d　ばんめの　おなかまは　どなたに　なさいますか", i + 1);
-		// メッセージリスト(表示用）に、メッセージサイズにリサイズして代入
-		pTextList_Display_MessageMaster =
-			ResizeStringList_By_tArea(pTextList_Display_MessageMaster, pTextList_Master_MessageMaster, AreaT_MessageMaster, START_FROM_LAST, 1);
-		// メッセージ表示エリアをクリア
-		ClearArea(&AreaT_MessageMaster);
-		// メッセージ表示
-		DrawTextList_Plain(AreaT_MessageMaster, pTextList_Display_MessageMaster, &ptCur_Draw);
-
-		// ----------
 		// カスタム入力/組み込みキャラクター　選択
 		// 補助ウインドウに選択肢表示
 		// ---------
@@ -199,19 +183,21 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 
 		StringList_DeleteAll(pTextList_Master_CharacterCreate_Sub);
 
-		pCur_Str = StringList_New("┏━━━┳━━━━┓");
+		pCur_Str = StringList_New_Blank();
+		sprintf(pCur_Str->szText, "%2d　ばんめのおなかまは？", i + 1);
+		pCur_Str = StringList_Add(pCur_Str, "┏━━━┳━━━━┓", true);;
 		pCur_Str = StringList_Add(pCur_Str, "┃コード┃なまえ　┃", true);
 		pCur_Str = StringList_Add(pCur_Str, "┣━━━╋━━━━┫", true);
 		
 		j = 1;
-		pCur_Chr = pBuiltInCharaList;
+		pCur_Chr_S = pBuiltInCharaList;
 		while (1)
 		{
 			pCur_Str = StringList_Add_Blank(pCur_Str, true);
-			sprintf(pCur_Str->szText, "┃　　%2d┃%s┃", j, pCur_Chr->szName);
-			if (pCur_Chr->next != NULL)
+			sprintf(pCur_Str->szText, "┃　　%2d┃%s┃", j, pCur_Chr_S->szName);
+			if (pCur_Chr_S->next != NULL)
 			{
-				pCur_Chr = pCur_Chr->next;
+				pCur_Chr_S = pCur_Chr_S->next;
 				j++;
 			}
 			else
@@ -235,7 +221,142 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 		gotoxy_pt(ptCur_Draw);
 		nCharacter_Selected = InputInteger_pt(0, j, &ptCur_Draw, true);
 
-		
+		msleep(500);
+
+		// --------------------
+		// キャラクター情報の入力
+		// --------------------
+		if (nCharacter_Selected > 0)
+		{
+			// --------------------
+			// 組み込みキャラクター
+			// --------------------
+			// --------------------
+			// パーティメンバーの追加
+			// --------------------
+			// 組み込みキャラクターリストから、読み込み（選択番号-1回　次へにまわせば該当キャラクター選択）
+			pCur_Chr_S = pBuiltInCharaList;
+			for (j = 1; j < nCharacter_Selected; j++)
+			{
+				pCur_Chr_S = pCur_Chr_S->next;
+			}
+			// パーティメンバーに追加（パーティんメンバー人数も合わせて更新
+			pCur_Chr_D = CharacterList_Add(pCharacterList, pCur_Chr_S, pNumMember, true);
+			// --------------------
+			// 描画
+			// --------------------
+			// 描画座標
+			ptCur_Draw.x = ptStart_CharacterCreate_Chara[i].x + SIZE_OF_BORDER; // 描画開始位置　＋　罫線（左）
+			ptCur_Draw.y = ptStart_CharacterCreate_Chara[i].y + NEXT_LINE;		// 描画開始位置　の　次の行
+			// なまえ
+			gotoxy_pt(ptCur_Draw);				// 移動
+			printf(pCur_Chr_D->szName);			// 描画
+			// 職業
+			ptCur_Draw.y += NEXT_LINE;			// 改行
+			gotoxy_pt(ptCur_Draw);				// 移動
+			printf(pCur_Chr_D->job.szName);		// 描画
+			// 改行
+			ptCur_Draw.y += NEXT_LINE;			// 改行
+			// HP
+			ptCur_Draw.y += NEXT_LINE;			// 改行
+			gotoxy_pt(ptCur_Draw);				// 移動
+			printf("%8d", pCur_Chr_D->nHP);
+			// SP
+			ptCur_Draw.y += NEXT_LINE;			// 改行
+			gotoxy_pt(ptCur_Draw);				// 移動
+			printf("%8d", pCur_Chr_D->nSP);		// 描画
+			// 改行
+			ptCur_Draw.y += NEXT_LINE;			// 改行
+			// こうげき
+			ptCur_Draw.y += NEXT_LINE;			// 改行
+			gotoxy_pt(ptCur_Draw);				// 移動
+			printf("%8d", pCur_Chr_D->nAtk);		// 描画
+			// ぼうぎょ
+			ptCur_Draw.y += NEXT_LINE;			// 改行
+			gotoxy_pt(ptCur_Draw);				// 移動
+			printf("%8d", pCur_Chr_D->nDef);		// 描画
+			// 改行
+			ptCur_Draw.y += NEXT_LINE;			// 改行
+			// まほこう
+			ptCur_Draw.y += NEXT_LINE;			// 改行
+			gotoxy_pt(ptCur_Draw);				// 移動
+			printf("%8d", pCur_Chr_D->nMAtk);	// 描画
+			// まほぼう
+			ptCur_Draw.y += NEXT_LINE;			// 改行
+			gotoxy_pt(ptCur_Draw);				// 移動
+			printf("%8d", pCur_Chr_D->nMDef);	// 描画
+			// 改行
+			ptCur_Draw.y += NEXT_LINE;			// 改行
+			// すばやさ
+			ptCur_Draw.y += NEXT_LINE;			// 改行
+			gotoxy_pt(ptCur_Draw);				// 移動
+			printf("%8d", pCur_Chr_D->nSpd);		// 描画
+		}
+		// --------------------
+		// カスタムキャラクター
+		// --------------------
+		else
+		{
+			msleep(500);
+
+			pCur_Chr_D = CharacterList_Add_Blank(pCharacterList, pNumMember, true);
+
+			ptCur_Draw_Sub = ptStart_CharacterCreate_Sub;
+			// サブメッセージ表示エリアをクリア
+			ClearArea(&AreaT_CharacterCreate_Sub);
+
+			// 描画座標
+			ptCur_Draw.x = ptStart_CharacterCreate_Chara[i].x + SIZE_OF_BORDER; // 描画開始位置　＋　罫線（左）
+			ptCur_Draw.y = ptStart_CharacterCreate_Chara[i].y + NEXT_LINE;		// 描画開始位置　の　次の行
+
+			// なまえ
+			// 入力
+			gotoxy_pt(ptCur_Draw_Sub);
+			
+			// 描画
+			gotoxy_pt(ptCur_Draw);										
+			printf(pCur_Chr_D->szName);	
+			// 職業
+			ptCur_Draw.y += NEXT_LINE;											// 改行
+			gotoxy_pt(ptCur_Draw);												// 移動
+			printf(pCur_Chr_D->job.szName);										// 描画
+			// 改行
+			ptCur_Draw.y += NEXT_LINE;											// 改行
+			// HP
+			ptCur_Draw.y += NEXT_LINE;											// 改行
+			gotoxy_pt(ptCur_Draw);												// 移動
+			printf("%8d", pCur_Chr_D->nHP);
+			// SP
+			ptCur_Draw.y += NEXT_LINE;											// 改行
+			gotoxy_pt(ptCur_Draw);												// 移動
+			printf("%8d", pCur_Chr_D->nSP);										// 描画
+			// 改行
+			ptCur_Draw.y += NEXT_LINE;											// 改行
+			// こうげき
+			ptCur_Draw.y += NEXT_LINE;											// 改行
+			gotoxy_pt(ptCur_Draw);												// 移動
+			printf("%8d", pCur_Chr_D->nAtk);										// 描画
+			// ぼうぎょ
+			ptCur_Draw.y += NEXT_LINE;											// 改行
+			gotoxy_pt(ptCur_Draw);												// 移動
+			printf("%8d", pCur_Chr_D->nDef);										// 描画
+			// 改行
+			ptCur_Draw.y += NEXT_LINE;											// 改行
+			// まほこう
+			ptCur_Draw.y += NEXT_LINE;											// 改行
+			gotoxy_pt(ptCur_Draw);												// 移動
+			printf("%8d", pCur_Chr_D->nMAtk);									// 描画
+			// まほぼう
+			ptCur_Draw.y += NEXT_LINE;											// 改行
+			gotoxy_pt(ptCur_Draw);												// 移動
+			printf("%8d", pCur_Chr_D->nMDef);									// 描画
+			// 改行
+			ptCur_Draw.y += NEXT_LINE;											// 改行
+			// すばやさ
+			ptCur_Draw.y += NEXT_LINE;											// 改行
+			gotoxy_pt(ptCur_Draw);												// 移動
+			printf("%8d", pCur_Chr_D->nSpd);										// 描画
+		}
 	}
 	
 
@@ -247,71 +368,6 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	StringList_DeleteAll(pTextList_Master_MessageMaster);
 
 	getchar();
-}
-// 【関数内容】
-// キャラクター作成シーン_表示（マスタメッセージ）
-// 【引数】
-// pNum		:【変更対象】現在のパーティ人数
-// pAdd		:【変更対象】追加人数（作成人数）
-// x_start	:【参照用　】開始X座標
-// y_start	:【参照用　】開始Y座標
-// 【戻り値】
-// 次のY座標
-int		DisplayMasterMessage_CreateScene(const int* pNum, int* pAdd, int x_start, int y_start)
-{
-	int x = x_start, y = y_start;
-	gotoxy(x, y); printf("なかまを　およびに　なるのですね");	y++;
-	gotoxy(x, y); printf("なんにん　およびに　なりますか？");	y++;
-	gotoxy(x, y); InputInteger(pAdd, 0, MAX_NUMBER_OF_CHARACTERS - (*pNum), x, y, true);
-	gotoxy(x, y);											y++;
-	return y;
-}
-// 【関数内容】
-// キャラクター作成シーン_表示（作成部）＋キャラクター作成
-// 【引数】
-// pCh			:【変更対象】作成するキャラクター構造体
-// pJobList		:【参照用　】職業一覧
-// x_start		:【参照用　】開始X座標
-// y_start		:【参照用　】開始Y座標
-// 【戻り値】
-// 次のY座標
-int		DisplayAndCreatePartyMember_CreateScene(tCharacter* pCh, const tJob* pJobList, int x_start, int y_start)
-{
-	// --------------------
-	// ローカル変数宣言, 初期化
-	// --------------------
-	int x = x_start, y = y_start;	// 描画位置
-	int tempY;						// 
-	int x_end, y_end;				// 描画終了位置（）
-
-	gotoxy(x, y); printf(""); y++;
-	tempY = y;
-	// --------------------
-	//　カスタムキャラクター　ステータス入力
-	// --------------------
-	
-	
-
-	//// なまえ　入力
-	//gotoxy(x, y);
-	//printf("[なまえ　]");
-	//InputString(pCh->szName, MAX_CHARACTERS_OF_HERO_NAME - 1, x + 10, y);
-	//y++;
-
-	//gotoxy(x, y); printf("[職　　業]");
-	//DisplayJobList(pJobList, x + 10 + 14, y, &x_end, &y_end);
-	//InputJob(pCh, pJobList, x + 10, y);
-	//ClearJobList(x + 10 + 14, y, x_end, y_end);
-	//y++;
-	//gotoxy(x, y); printf("[Ｈ　　Ｐ]"); InputInteger(&(pCh->nHP_Base), 1, 9, x + 10, y, true); y++;
-	//gotoxy(x, y); printf("[Ｓ　　Ｐ]"); InputInteger(&(pCh->nSP_Base), 1, 9, x + 10, y, true); y++;
-	//gotoxy(x, y); printf("[こうげき]"); InputInteger(&(pCh->nAtk_Base), 1, 9, x + 10, y, true); y++;
-	//gotoxy(x, y); printf("[ぼうぎょ]"); InputInteger(&(pCh->nDef_Base), 1, 9, x + 10, y, true); y++;
-	//gotoxy(x, y); printf("[まほこう]"); InputInteger(&(pCh->nMAtk_Base), 1, 9, x + 10, y, true); y++;
-	//gotoxy(x, y); printf("[まほぼう]"); InputInteger(&(pCh->nMDef_Base), 1, 9, x + 10, y, true); y++;
-	//gotoxy(x, y); printf("[すばやさ]"); InputInteger(&(pCh->nSpd_Base), 1, 9, x + 10, y, true); y++;
-	//CalculateCharacterStatus(pCh);
-	return y;
 }
 // 【関数内容】
 // キャラクター作成シーン_表示（追加不可時）

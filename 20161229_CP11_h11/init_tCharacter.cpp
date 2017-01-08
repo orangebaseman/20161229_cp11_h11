@@ -34,7 +34,7 @@ void	InitBuiltInCharacters(tCharacter* pBuiltInCharaList, const tJob* pJobList, 
 	pCh->nSpd_Base = 7;									// すばやさ
 	CalculateCharacterStatus(pCh);						// ステータスを算出
 
-	pCh = CharacterList_Add(pCh, npNum, true);
+	pCh = CharacterList_Add_Blank(pCh, npNum, true);
 	strcpy(pCh->szName, "アイアス");
 	pCh->job.nCode = 2;									// タンク（コード:2）
 	pCh->job = getJobByCode(pCh->job.nCode, pJobList);	// 職業構造体取得
@@ -47,7 +47,7 @@ void	InitBuiltInCharacters(tCharacter* pBuiltInCharaList, const tJob* pJobList, 
 	pCh->nSpd_Base = 7;									// すばやさ
 	CalculateCharacterStatus(pCh);						// ステータスを算出
 
-	pCh = CharacterList_Add(pCh, npNum, true);
+	pCh = CharacterList_Add_Blank(pCh, npNum, true);
 	strcpy(pCh->szName, "リュウ　");
 	pCh->job.nCode = 3;									// かくとう（コード:3）
 	pCh->job = getJobByCode(pCh->job.nCode, pJobList);	// 職業構造体取得
@@ -60,7 +60,7 @@ void	InitBuiltInCharacters(tCharacter* pBuiltInCharaList, const tJob* pJobList, 
 	pCh->nSpd_Base = 7;									// すばやさ
 	CalculateCharacterStatus(pCh);						// ステータスを算出
 
-	pCh = CharacterList_Add(pCh, npNum, true);
+	pCh = CharacterList_Add_Blank(pCh, npNum, true);
 	strcpy(pCh->szName, "ハヤテ　");
 	pCh->job.nCode = 4;									// にんじゃ（コード:4）
 	pCh->job = getJobByCode(pCh->job.nCode, pJobList);	// 職業構造体取得
@@ -73,7 +73,7 @@ void	InitBuiltInCharacters(tCharacter* pBuiltInCharaList, const tJob* pJobList, 
 	pCh->nSpd_Base = 7;									// すばやさ
 	CalculateCharacterStatus(pCh);						// ステータスを算出
 
-	pCh = CharacterList_Add(pCh, npNum, true);
+	pCh = CharacterList_Add_Blank(pCh, npNum, true);
 	strcpy(pCh->szName, "ポップ　");
 	pCh->job.nCode = 5;									// まほう（コード:5）
 	pCh->job = getJobByCode(pCh->job.nCode, pJobList);	// 職業構造体取得
@@ -86,7 +86,7 @@ void	InitBuiltInCharacters(tCharacter* pBuiltInCharaList, const tJob* pJobList, 
 	pCh->nSpd_Base = 7;									// すばやさ
 	CalculateCharacterStatus(pCh);						// ステータスを算出
 
-	pCh = CharacterList_Add(pCh, npNum, true);
+	pCh = CharacterList_Add_Blank(pCh, npNum, true);
 	strcpy(pCh->szName, "ナコルル");
 	pCh->job.nCode = 6;									// みこ（コード:6）
 	pCh->job = getJobByCode(pCh->job.nCode, pJobList);	// 職業構造体取得

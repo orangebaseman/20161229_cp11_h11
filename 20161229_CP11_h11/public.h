@@ -15,6 +15,8 @@
 #define MAX_NUMBER_OF_CHARACTERS	(4)		// キャラクター人数
 #define MAX_CHARACTERS_OF_JOB_NAME	(4 * 2)	// 職業最大文字数(全角４文字）
 #define MAX_CHARACTERS_OF_HERO_NAME	(4 * 2)	// キャラ最大文字数(全角４文字）
+#define	PREVIOUS_LINE				(1)		//1行前
+#define	NEXT_LINE					(1)		//1行次
 #define SIZE_OF_BORDER				(2)		// 罫線の大きさ
 #define	SIZE_OF_NULL				(1)		// ヌル文字の大きさ
 #define	SIZE_OF_HANKAKU_CHARACTER	(1)		// 半角文字の大きさ
@@ -137,7 +139,8 @@ void	JobList_DeleteAll(tJob*);										// JobList全削除
 // リスト構造：tCharacter
 // list_tCharacter.cpp
 tCharacter*	CharacterList_New(int*);									// CharacterListを新規作成
-tCharacter*	CharacterList_Add(tCharacter*, int*, bool);					// CharacterListに追加（true:最後尾に追加 false:直後に追加)
+tCharacter*	CharacterList_Add(tCharacter* pDest, const tCharacter* pAdd, int* pNum, bool isAddToLast);
+tCharacter*	CharacterList_Add_Blank(tCharacter*, int*, bool);					// CharacterListに追加（true:最後尾に追加 false:直後に追加)
 void		CharacterList_Delete(tCharacter*);							// CharacterList一件削除
 void		CharacterList_DeleteAll(tCharacter*);						// CharacterList全削除
 tCharacter*	CharacterList_First(tCharacter* pChr);

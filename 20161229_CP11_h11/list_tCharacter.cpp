@@ -19,7 +19,19 @@ tCharacter*	CharacterList_New(int* pNum)
 	(*pNum)++;
 	return firstCh;
 }
-tCharacter*	CharacterList_Add(tCharacter* pCh, int* pNum, bool isAddToLast)
+tCharacter*	CharacterList_Add(tCharacter* pDest, const tCharacter* pAdd, int* pNum, bool isAddToLast)
+{
+	tCharacter temp;
+	pDest = CharacterList_Add_Blank(pDest, pNum, isAddToLast);
+	temp.prev = pDest->prev;
+	temp.next = pDest->next;
+	(*pDest) = (*pAdd);
+	pDest->prev = temp.prev;
+	pDest->next = temp.next;
+	return pDest;
+}
+
+tCharacter*	CharacterList_Add_Blank(tCharacter* pCh, int* pNum, bool isAddToLast)
 {
 	if (isAddToLast)
 	{
