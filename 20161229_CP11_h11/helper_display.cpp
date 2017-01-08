@@ -4,13 +4,6 @@
 #include	"public.h"
 #include	"conioex.h"
 
-#ifndef PREVIOUS_LINE
-#define	PREVIOUS_LINE	(1)	//1s‘O
-#endif
-#ifndef NEXT_LINE
-#define	NEXT_LINE		(1)	//1sŸ
-#endif
-
 // --------------------
 // ‹^—privateŠÖ”éŒ¾
 // --------------------
