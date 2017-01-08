@@ -59,8 +59,38 @@ void	ClearArea(const tArea* area)
 //  罫線ウインドウ　内側の描画範囲
 tArea Area_Inside_BorderWindow(const tArea* area)
 {
-	// YOU SHOULD ERROR CHECK HERE
+	// --------------------
+	// ローカル変数宣言、初期化
+	// --------------------
 	tArea area_inside = (*area);
+	int nLength = area->end.x - area->start.x;
+	int nLines = area->end.y - area->start.y;
+	tPoint2D	ptCur = area->start;
+	bool isError = false;
+	// --------------------
+	// エラーチェック
+	// --------------------
+	if (nLength <= SIZE_OF_BORDER + SIZE_OF_BORDER)
+	{
+		gotoxy_pt(ptCur);
+		printf("Area_Inside_BorderWindow ERROR：描画可能領域がありません。入力した幅を確認してください。");
+		ptCur.y++;
+		isError = true;
+	}
+	if (nLines <= PREVIOUS_LINE + NEXT_LINE)
+	{
+		gotoxy_pt(ptCur);
+		printf("Area_Inside_BorderWindow ERROR：描画可能領域がありません。入力した高さを確認してください。");
+		ptCur.y++;
+		isError = true;
+	}
+	if (isError)
+	{
+		return (*area);
+	}
+	// --------------------
+	// 罫線ウインドウの内側の描画範囲を返却
+	// --------------------
 	area_inside.start.x += SIZE_OF_BORDER;
 	area_inside.start.y += NEXT_LINE;
 	area_inside.end.x -= SIZE_OF_BORDER;
@@ -146,8 +176,6 @@ tArea	DrawLine_Border(tPoint2D* pPtStart, bool isUpdateCur, const char* borderLe
 	// --------------------
 	// ローカル変数宣言、初期化	
 	// --------------------
-	// ループカウンタ
-	int			i;
 	// 描画座標
 	tPoint2D	ptCur = (*pPtStart);
 	// 描画領域
@@ -281,9 +309,8 @@ tArea	DrawBorderWindow(tPoint2D* pPtStart, bool isUpdateCur, const size_t width,
 	// 直線描画
 	// --------
 	// 横描画 (両端は描画せず）
-	for (i = 0 + SIZE_OF_BORDER; i <= ptZenkakuEnd.x - SIZE_OF_BORDER; i += SIZE_OF_ZENAKU_CHARACTER)
+	for (ptCur.x = pPtStart->x + SIZE_OF_BORDER; ptCur.x <= ptZenkakuEnd.x - SIZE_OF_BORDER; ptCur.x += SIZE_OF_ZENAKU_CHARACTER)
 	{
-		ptCur.x = pPtStart->x + i;	// X座標位置
 		// 上側
 		ptCur.y = pPtStart->y;		// Y座標位置（原点）
 		gotoxy_pt(ptCur);			// 移動実行
@@ -294,9 +321,8 @@ tArea	DrawBorderWindow(tPoint2D* pPtStart, bool isUpdateCur, const size_t width,
 		printf("━");				// 描画
 	}
 	// 縦描画 (両端は描画せず）
-	for (i = 0 + NEXT_LINE; i < ptZenkakuEnd.y - PREVIOUS_LINE; i++)
+	for (ptCur.y = pPtStart->y + NEXT_LINE; ptCur.y <= ptZenkakuEnd.y - PREVIOUS_LINE; ptCur.y++)
 	{
-		ptCur.y = pPtStart->y + i;	// Y座標位置
 		// 上側
 		ptCur.x = pPtStart->x;		// X移動位置（原点）
 		gotoxy_pt(ptCur);			// 移動実行

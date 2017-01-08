@@ -145,8 +145,9 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	ptStart_CharacterCreate_Sub.y = ptStart_CharacterCreate_Head.y;
 	nLen_CharacterCreate_Sub = MAX_WIDTH_OF_WINDOW - ptStart_CharacterCreate_Sub.x - SIZE_OF_BORDER - SIZE_OF_NULL;
 	ptCur_Draw = ptStart_CharacterCreate_Sub;
-
-	AreaW_CharacterCreate_Sub = DrawBorderWindow(&ptCur_Draw, false, 20, nLines_CharacterCreate_Sub);
+	ptCur_Draw.x = 45;
+	ptCur_Draw.y = 11;
+	AreaW_CharacterCreate_Sub = DrawBorderWindow(&ptCur_Draw, false, 34, 14);
 	
 
 	// å„èàóù
