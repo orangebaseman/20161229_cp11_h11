@@ -140,6 +140,8 @@ tCharacter*	CharacterList_New(int*);									// CharacterListを新規作成
 tCharacter*	CharacterList_Add(tCharacter*, int*, bool);					// CharacterListに追加（true:最後尾に追加 false:直後に追加)
 void		CharacterList_Delete(tCharacter*);							// CharacterList一件削除
 void		CharacterList_DeleteAll(tCharacter*);						// CharacterList全削除
+tCharacter*	CharacterList_First(tCharacter* pChr);
+tCharacter*	CharacterList_Last(tCharacter* pChr);
 
 // リスト構造：tString
 // list_tString.cpp

@@ -33,21 +33,22 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	int x, y = 2, tempY;				// 描画XY座標
 	tPoint2D	ptCur_Draw = { 1, 1 };	// 描画現在位置
 	tString*	pCur_Str;				// StringListの現在位置
-	bool		isLast;
-	int i;								// ループカウンタ
-	int nAdd = 1;						// 作成（追加）人数
+	const tCharacter*	pCur_Chr;				// CharacterListの現在位置
+	bool		isLast;					// 最後かどうか
+	int			i, j;						// ループカウンタ
+	int			nCharacter_Selected;	// 選択キャラ
+	int			nAdd = 1;				// 作成（追加）人数
 	tCharacter* pCh = pCharacterList;	// キャラクター構造体ポインタ
 	// -------
 	// マスタメッセージ部　変数
 	// ------
-	tPoint2D	ptStart_MessageMaster = { 1, 1 };			// 原点（左上）
-	int			nLen_MessageMaster = MAX_WIDTH_OF_WINDOW;	// 長さ
-	int			nLines_MessageMaster = 9;					// 行数
-	tArea		AreaW_MessageMaster;						// Area(Window全体）
-	tArea		AreaT_MessageMaster;						// Area(Text部分）
-	tString*	pTextList_Master_MessageMaster;				// メッセージリスト(全体）
-	tString*	pTextList_Display_MessageMaster;			// メッセージリスト（表示部分）
-	pTextList_Display_MessageMaster = StringList_New_Blank();
+	tPoint2D	ptStart_MessageMaster = { 1, 1 };				// 原点（左上）
+	int			nLen_MessageMaster = MAX_WIDTH_OF_WINDOW;		// 長さ
+	int			nLines_MessageMaster = 9;						// 行数
+	tArea		AreaW_MessageMaster;							// Area(Window全体）
+	tArea		AreaT_MessageMaster;							// Area(Text部分）
+	tString*	pTextList_Master_MessageMaster = NULL;			// メッセージリスト(全体）
+	tString*	pTextList_Display_MessageMaster = NULL;			// メッセージリスト（表示部分）
 	// -------
 	// キャラクター作成部　変数
 	// ------
@@ -63,12 +64,13 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	// -------
 	// キャラクター作成補助部　変数
 	// ------
-	tPoint2D	ptStart_CharacterCreate_Sub;	//
-	int			nLen_CharacterCreate_Sub;		//
-	int			nLines_CharacterCreate_Sub;		// 行数
-	tArea		AreaW_CharacterCreate_Sub;		// Area(Window全体）
-	tArea		AreaT_CharacterCreate_Sub;		// Area(Text部分）
-
+	tPoint2D	ptStart_CharacterCreate_Sub;						//
+	int			nLen_CharacterCreate_Sub;							//
+	int			nLines_CharacterCreate_Sub;							// 行数
+	tArea		AreaW_CharacterCreate_Sub;							// Area(Window全体）
+	tArea		AreaT_CharacterCreate_Sub;							// Area(Text部分）
+	tString*	pTextList_Master_CharacterCreate_Sub = NULL;		// メッセージリスト(全体）
+	tString*	pTextList_Display_CharacterCreate_Sub = NULL;		// メッセージリスト（表示部分）
 	// -------
 	// 画面クリア
 	// ------
@@ -119,6 +121,7 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 		// 後処理
 		StringList_DeleteAll(pTextList_Display_MessageMaster);
 		StringList_DeleteAll(pTextList_Master_MessageMaster);
+		StringList_DeleteAll(pTextList_Display_CharacterCreate_Sub);
 		return;
 	}
 
@@ -188,9 +191,51 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 		// メッセージ表示
 		DrawTextList_Plain(AreaT_MessageMaster, pTextList_Display_MessageMaster, &ptCur_Draw);
 
-		// 
+		// ----------
+		// カスタム入力/組み込みキャラクター　選択
+		// 補助ウインドウに選択肢表示
+		// ---------
+		ptCur_Draw = ptStart_CharacterCreate_Sub;
 
-		getchar();
+		StringList_DeleteAll(pTextList_Master_CharacterCreate_Sub);
+
+		pCur_Str = StringList_New("┏━━━┳━━━━┓");
+		pCur_Str = StringList_Add(pCur_Str, "┃コード┃なまえ　┃", true);
+		pCur_Str = StringList_Add(pCur_Str, "┣━━━╋━━━━┫", true);
+		
+		j = 1;
+		pCur_Chr = pBuiltInCharaList;
+		while (1)
+		{
+			pCur_Str = StringList_Add_Blank(pCur_Str, true);
+			sprintf(pCur_Str->szText, "┃　　%2d┃%s┃", j, pCur_Chr->szName);
+			if (pCur_Chr->next != NULL)
+			{
+				pCur_Chr = pCur_Chr->next;
+				j++;
+			}
+			else
+			{
+				break;
+			}
+		}
+		pCur_Str = StringList_Add(pCur_Str, "┃　　 0┃じぶんで┃", true);
+		pCur_Str = StringList_Add(pCur_Str, "┗━━━┻━━━━┛", true);
+
+		pTextList_Master_CharacterCreate_Sub = StringList_First(pCur_Str);
+
+		// メッセージリスト(表示用）に、メッセージサイズにリサイズして代入
+		pTextList_Display_CharacterCreate_Sub =
+			ResizeStringList_By_tArea(pTextList_Display_CharacterCreate_Sub, pTextList_Master_CharacterCreate_Sub, AreaT_CharacterCreate_Sub, START_FROM_LAST, 1);
+		// メッセージ表示エリアをクリア
+		ClearArea(&AreaT_CharacterCreate_Sub);
+		// メッセージ表示
+		DrawTextList_Plain(AreaT_CharacterCreate_Sub, pTextList_Display_CharacterCreate_Sub, &ptCur_Draw);
+
+		gotoxy_pt(ptCur_Draw);
+		nCharacter_Selected = InputInteger_pt(0, j, &ptCur_Draw, true);
+
+		
 	}
 	
 

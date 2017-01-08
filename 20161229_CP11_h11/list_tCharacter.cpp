@@ -77,3 +77,19 @@ void		CharacterList_DeleteAll(tCharacter* pCharacterList)
 		pCh = pNext;
 	}
 }
+tCharacter*	CharacterList_First(tCharacter* pChr)
+{
+	while (pChr->prev != NULL)
+	{
+		pChr = pChr->prev;
+	}
+	return pChr;
+}
+tCharacter*	CharacterList_Last(tCharacter* pChr)
+{
+	while (pChr->next != NULL)
+	{
+		pChr = pChr->next;
+	}
+	return pChr;
+}
