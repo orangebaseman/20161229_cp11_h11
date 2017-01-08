@@ -63,11 +63,11 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	// -------
 	// キャラクター作成補助部　変数
 	// ------
-	tPoint2D	ptStart_CharacterCreate_Sub;
-	int			nLen_CharacterCreate_Sub;
-	int			nLines_CharacterCreate_Sub = 15;	// 行数
-	tArea		AreaW_CharacterCreate_Sub;			// Area(Window全体）
-	tArea		AreaT_CharacterCreate_Sub;			// Area(Text部分）
+	tPoint2D	ptStart_CharacterCreate_Sub;	//
+	int			nLen_CharacterCreate_Sub;		//
+	int			nLines_CharacterCreate_Sub;		// 行数
+	tArea		AreaW_CharacterCreate_Sub;		// Area(Window全体）
+	tArea		AreaT_CharacterCreate_Sub;		// Area(Text部分）
 
 	// -------
 	// 画面クリア
@@ -109,24 +109,36 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	// --------------------
 	// キャラクター作成人数　入力
 	// --------------------
+	// キャラクター人数をキーボードから取得
 	nAdd = InputInteger_pt(0, MAX_NUMBER_OF_CHARACTERS - (*pNumMember), &ptCur_Draw, true);
-	msleep(500);
 
+	msleep(500);
+	// ※追加しないならシーン終了
+	if (nAdd <= 0) 
+	{
+		// 後処理
+		StringList_DeleteAll(pTextList_Display_MessageMaster);
+		StringList_DeleteAll(pTextList_Master_MessageMaster);
+		return;
+	}
+
+	// ----------
+	// マスターメッセージ　表示内容更新
+	// ---------
+	pCur_Str = StringList_Add(pCur_Str, "", true);
 	pCur_Str = pTextList_Master_MessageMaster;
 	pCur_Str = StringList_Add_Blank(pCur_Str, true);
-	sprintf(pCur_Str->szText, "%2dめい　およびに　なるのですね", nAdd);
-	pCur_Str = StringList_Add(pCur_Str, "しょうしょう　おまちください", true);
-
+	sprintf(pCur_Str->szText, "%2d　めい　およびに　なるのですね", nAdd);
 	// メッセージリスト(表示用）に、メッセージサイズにリサイズして代入
 	pTextList_Display_MessageMaster = 
 		ResizeStringList_By_tArea(pTextList_Display_MessageMaster, pTextList_Master_MessageMaster, AreaT_MessageMaster, START_FROM_LAST, 1);
+	// メッセージ表示エリアをクリア
 	ClearArea(&AreaT_MessageMaster);
+	// メッセージ表示
 	DrawTextList_Plain(AreaT_MessageMaster, pTextList_Display_MessageMaster, &ptCur_Draw);
-
-	// ※追加しないならシーン終了
-	if (nAdd <= 0) return;
+	
 	// --------------------
-	// キャラクター作成部
+	// キャラクター作成部　描画
 	// --------------------
 	ptCur_Draw = ptStart_CharacterCreate_Head;
 	DisplayStatusHeader_PT(&ptCur_Draw);
@@ -138,19 +150,25 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	}
 
 	// --------------------
-	// キャラクター作成補助部
+	// キャラクター作成補助部　描画
 	// --------------------
-	// 初期化
-	ptStart_CharacterCreate_Sub.x = ptStart_CharacterCreate_Chara[nAdd - 1].x + MAX_CHARACTERS_OF_HERO_NAME + SIZE_OF_BORDER + SIZE_OF_BORDER + SIZE_OF_BORDER;
+	// 変数初期化
+	// 原点　X座標（キャラクター作成部　最後の一つのX座標　＋　罫線（左）　＋　表示文字数　＋　罫線（右）　＋　全角スペース）
+	ptStart_CharacterCreate_Sub.x = ptStart_CharacterCreate_Chara[nAdd - 1].x + SIZE_OF_BORDER + MAX_CHARACTERS_OF_HERO_NAME + SIZE_OF_BORDER + SIZE_OF_ZENAKU_CHARACTER;
+	// 原点　X座標（キャラクター作成部のY座標）
 	ptStart_CharacterCreate_Sub.y = ptStart_CharacterCreate_Head.y;
-	nLen_CharacterCreate_Sub = MAX_WIDTH_OF_WINDOW - ptStart_CharacterCreate_Sub.x - SIZE_OF_BORDER - SIZE_OF_NULL;
-	ptCur_Draw = ptStart_CharacterCreate_Sub;
-	ptCur_Draw.x = 45;
-	ptCur_Draw.y = 11;
-	AreaW_CharacterCreate_Sub = DrawBorderWindow(&ptCur_Draw, false, 34, 14);
-	
+	// 幅（キャラクター作成部右側全て：ウインドウ幅　+ ヌル文字 - X座標開始位置）
+	nLen_CharacterCreate_Sub = MAX_WIDTH_OF_WINDOW + SIZE_OF_NULL - ptStart_CharacterCreate_Sub.x;
+	// 高さ
+	nLines_CharacterCreate_Sub = 15;
 
+	// 描画
+	ptCur_Draw = ptStart_CharacterCreate_Sub;
+	AreaW_CharacterCreate_Sub = DrawBorderWindow(&ptCur_Draw, false, nLen_CharacterCreate_Sub, nLines_CharacterCreate_Sub);
+	
+	// --------------------
 	// 後処理
+	// --------------------
 	StringList_DeleteAll(pTextList_Display_MessageMaster);
 	StringList_DeleteAll(pTextList_Master_MessageMaster);
 
