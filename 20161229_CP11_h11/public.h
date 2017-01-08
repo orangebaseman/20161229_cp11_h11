@@ -163,8 +163,10 @@ tString*	StringList_Reverse(tString* pStr);
 // helper_input.cpp
 int		InputInteger(int*, unsigned int, unsigned int, int, int, bool);	// 整数を変数に入力
 int		InputInteger_pt(unsigned int min, unsigned int max, tPoint2D* ptStart, bool isMinMaxShowed);
-void	InputString(char[], int, int, int);								// 文字列を変数に入力
-void	InputJob(tCharacter*, const tJob*, int, int);					// 職業を選択し、変数に入力
+int		InputString(char pInput[], int nMaxLen, int x_start, int y_start);
+void	InputString_pt(char pInput[], int nMaxLen, tPoint2D* ptDraw);
+int		InputJob(tCharacter*, const tJob*, int, int);					// 職業を選択し、変数に入力
+void	InputJob_pt(tCharacter* pCh, const tJob* pJobList, tPoint2D* ptDraw, tPoint2D* ptJobList);
 void	Trim_And_Copy_String(char*, const char*, int);
 void	Copy_String_From_Certain(char*, const char*, int, int);
 
@@ -175,16 +177,17 @@ void	gotoxy_pt(tPoint2D point);
 void	ClearArea(const tArea*);
 tArea	DrawBorderWindow(tPoint2D*, bool, const size_t, const size_t);	//
 tArea	Area_Inside_BorderWindow(const tArea*);
-void DrawTextList_Plain(tArea AreaDisp, tString* pTextList, tPoint2D* ptCur_Draw);
+void	DrawTextList_Plain(tArea AreaDisp, tString* pTextList, tPoint2D* ptCur_Draw);
 int		DisplayStatusHeader(int, int);							
 tPoint2D*	DisplayStatusHeader_PT(tPoint2D* ptStart);					//
 int		DisplayStatusBlank(int, int, bool);								//
 tPoint2D*	DisplayStatusBlank_pt(tPoint2D* ptStart, bool isLast);
 void	DisplayJobList(const tJob*, int, int, int*, int*);				// 
+tArea	DisplayJobList_pt(const tJob* pJobList, tPoint2D* ptDraw);
 int		ResizeStringLine(tString* pStrLine, int nMaxLen);
 tString* ResizeStringList(tString* , tString* , int, int , int, int);
 tString* ResizeStringList_By_tArea(tString* pDest, tString* pSource, tArea area, int order, int nStart);
-void ShowTextinWindow(tString* pMessageList, tArea area);
+void	ShowTextinWindow(tString* pMessageList, tArea area);
 
 // メニューシーン
 // scene0_menu.cpp

@@ -66,7 +66,7 @@ int		InputInteger_pt(unsigned int min, unsigned int max, tPoint2D* ptDraw, bool 
 	gotoxy_pt(*ptDraw);
 	return nInput;
 }
-void	InputString(char pInput[], int nMaxLen, int x_start, int y_start)
+int	InputString(char pInput[], int nMaxLen, int x_start, int y_start)
 {
 	int i;
 	int x = x_start, y = y_start;
@@ -96,7 +96,7 @@ void	InputString(char pInput[], int nMaxLen, int x_start, int y_start)
 
 		gotoxy(x + nMaxLen + 1, y);
 		printf("]OK?(Y/N)");
-		for (i = x + nMaxLen + 12; i <= MAX_WIDTH_OF_WINDOW; i++)
+		for (i = x + nMaxLen + 12; i <= MAX_WIDTH_OF_WINDOW - SIZE_OF_BORDER; i++)
 		{
 			printf(" ");
 		}
@@ -104,24 +104,48 @@ void	InputString(char pInput[], int nMaxLen, int x_start, int y_start)
 		rewind(stdin);
 		scanf("%c", &cYN);
 		gotoxy(x + nMaxLen + 2, y);
-		for (i = x + nMaxLen + 2; i <= MAX_WIDTH_OF_WINDOW; i++)
+		for (i = x + nMaxLen + 2; i <= MAX_WIDTH_OF_WINDOW - SIZE_OF_BORDER; i++)
 		{
 			printf(" ");
 		}
 		if (cYN == 'Y' || cYN == 'y')
 		{
-			return;
+			y++;
+			return y;
 		}
 	}
 }
-void	InputJob(tCharacter* pCh, const tJob* pJobList, int x_start, int y_start)
+void	InputString_pt(char pInput[], int nMaxLen, tPoint2D* ptDraw)
+{
+	ptDraw->y = InputString(pInput, nMaxLen, ptDraw->x, ptDraw->y);
+}
+int	InputJob(tCharacter* pCh, const tJob* pJobList, int x_start, int y_start)
 {
 	int x = x_start, y = y_start;
 	gotoxy(x, y);
-	InputInteger(&(pCh->job.nCode), 1, 6, x, y, false);
+	InputInteger(&(pCh->job.nCode), 1, MAX_NUMBER_OF_JOBS, x, y, false);
 	pCh->job = getJobByCode(pCh->job.nCode, pJobList);
 	gotoxy(x + 3, y);
 	printf("[%s]", pCh->job.szName);
+	y++;
+	return y;
+}
+void	InputJob_pt(tCharacter* pCh, const tJob* pJobList, tPoint2D* ptDraw, tPoint2D* ptJobList)
+{
+	tPoint2D ptCur_Draw = (*ptDraw);
+	tArea joblist_area = DisplayJobList_pt(pJobList, ptJobList);
+	gotoxy_pt(ptCur_Draw);
+	pCh->job.nCode = InputInteger_pt(1, MAX_NUMBER_OF_JOBS, &ptCur_Draw, true);
+	pCh->job = getJobByCode(pCh->job.nCode, pJobList);
+
+	msleep(500);
+
+	ClearArea(&joblist_area);
+
+	ptCur_Draw.x += 3;
+	gotoxy_pt(ptCur_Draw);
+	printf("[%s]", pCh->job.szName);
+
 }
 
 // yŠÖ”“à—ez

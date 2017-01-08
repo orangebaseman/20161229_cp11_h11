@@ -67,10 +67,11 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	// キャラクター作成補助部　変数
 	// ------
 	tPoint2D	ptStart_CharacterCreate_Sub;						//
+	tPoint2D	ptStart_JobList;									// JobList　表示位置
 	int			nLen_CharacterCreate_Sub;							//
 	int			nLines_CharacterCreate_Sub;							// 行数
 	tArea		AreaW_CharacterCreate_Sub;							// Area(Window全体）
-	tArea		AreaT_CharacterCreate_Sub;							// Area(Text部分）
+	tArea		AreaT_CharacterCreate_Sub;							// Area(Text部分）						
 	tString*	pTextList_Master_CharacterCreate_Sub = NULL;		// メッセージリスト(全体）
 	tString*	pTextList_Display_CharacterCreate_Sub = NULL;		// メッセージリスト（表示部分）
 	// -------
@@ -301,22 +302,42 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 
 			pCur_Chr_D = CharacterList_Add_Blank(pCharacterList, pNumMember, true);
 
-			ptCur_Draw_Sub = ptStart_CharacterCreate_Sub;
 			// サブメッセージ表示エリアをクリア
 			ClearArea(&AreaT_CharacterCreate_Sub);
-
+			ptCur_Draw_Sub = AreaT_CharacterCreate_Sub.start;
+			gotoxy_pt(ptCur_Draw_Sub);
+			printf("%2d　ばんめのおなかまは？", i + 1);
 			// 描画座標
 			ptCur_Draw.x = ptStart_CharacterCreate_Chara[i].x + SIZE_OF_BORDER; // 描画開始位置　＋　罫線（左）
 			ptCur_Draw.y = ptStart_CharacterCreate_Chara[i].y + NEXT_LINE;		// 描画開始位置　の　次の行
 
+			ptStart_JobList.x = AreaT_CharacterCreate_Sub.end.x - (SIZE_OF_BORDER + 3 * SIZE_OF_ZENAKU_CHARACTER + SIZE_OF_BORDER + MAX_CHARACTERS_OF_JOB_NAME + SIZE_OF_BORDER);
+			ptStart_JobList.y = AreaT_CharacterCreate_Sub.start.y + NEXT_LINE + NEXT_LINE;
+
+			//-----------
 			// なまえ
+			//-----------
 			// 入力
+			ptCur_Draw_Sub.y += NEXT_LINE;
 			gotoxy_pt(ptCur_Draw_Sub);
-			
+			printf("おなまえ　は？");
+			ptCur_Draw_Sub.y += NEXT_LINE;
+			gotoxy_pt(ptCur_Draw_Sub);
+			InputString_pt(pCur_Chr_D->szName, MAX_CHARACTERS_OF_HERO_NAME, &ptCur_Draw_Sub);
 			// 描画
 			gotoxy_pt(ptCur_Draw);										
 			printf(pCur_Chr_D->szName);	
+			//-----------
 			// 職業
+			//-----------
+			// 入力
+			ptCur_Draw_Sub.y++;
+			gotoxy_pt(ptCur_Draw_Sub);
+			printf("職　　業　は？");
+			ptCur_Draw_Sub.y++;
+			gotoxy_pt(ptCur_Draw_Sub);
+			InputJob_pt(pCur_Chr_D, pJobList, &ptCur_Draw_Sub, &ptStart_JobList);
+			
 			ptCur_Draw.y += NEXT_LINE;											// 改行
 			gotoxy_pt(ptCur_Draw);												// 移動
 			printf(pCur_Chr_D->job.szName);										// 描画

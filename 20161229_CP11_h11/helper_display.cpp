@@ -526,6 +526,14 @@ void	DisplayJobList(const tJob* pJobList, int x_start, int y_start, int* x_end, 
 	(*y_end) = y - 1;									// 現在位置の一つ上
 }
 
+tArea	DisplayJobList_pt(const tJob* pJobList, tPoint2D* ptDraw)
+{
+	tArea area;
+	area.start = (*ptDraw);
+	DisplayJobList(pJobList, ptDraw->x, ptDraw->y, &(area.end.x), &(area.end.y));
+	return area;
+}
+
 // 【関数内容】
 // 文字列を指定文字数でリサイズ
 // （オーバーしたらtStringを分割し、Listに追加）
