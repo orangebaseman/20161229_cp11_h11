@@ -90,7 +90,7 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	ptCur_Draw = ptStart_MessageMaster;	
 	// 罫線ウインドウの表示
 	AreaW_MessageMaster = DrawBorderWindow(&ptCur_Draw, true, nLen_MessageMaster, nLines_MessageMaster);
-	// 文字列Areaの所得
+	// 文字描画範囲取得
 	AreaT_MessageMaster = Area_Inside_BorderWindow(&AreaW_MessageMaster);
 	// --------
 	// メッセージの作成
@@ -125,8 +125,11 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	// ----------
 	// マスターメッセージ　表示内容更新
 	// ---------
-	pCur_Str = StringList_Add(pCur_Str, "", true);
+	// 現在位置をマスタメッセージリストへ
 	pCur_Str = pTextList_Master_MessageMaster;
+	// 空行追加
+	pCur_Str = StringList_Add(pCur_Str, "", true);
+	// メッセージ追加
 	pCur_Str = StringList_Add_Blank(pCur_Str, true);
 	sprintf(pCur_Str->szText, "%2d　めい　およびに　なるのですね", nAdd);
 	// メッセージリスト(表示用）に、メッセージサイズにリサイズして代入
@@ -136,7 +139,6 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	ClearArea(&AreaT_MessageMaster);
 	// メッセージ表示
 	DrawTextList_Plain(AreaT_MessageMaster, pTextList_Display_MessageMaster, &ptCur_Draw);
-	
 	// --------------------
 	// キャラクター作成部　描画
 	// --------------------
@@ -148,7 +150,6 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 		isLast = (i == nAdd - 1) ? true : false;
 		DisplayStatusBlank_pt(&ptCur_Draw, isLast);
 	}
-
 	// --------------------
 	// キャラクター作成補助部　描画
 	// --------------------
@@ -161,10 +162,38 @@ void	Execute_CreateScene(tCharacter* pCharacterList, const tCharacter* pBuiltInC
 	nLen_CharacterCreate_Sub = MAX_WIDTH_OF_WINDOW + SIZE_OF_NULL - ptStart_CharacterCreate_Sub.x;
 	// 高さ
 	nLines_CharacterCreate_Sub = 15;
-
 	// 描画
 	ptCur_Draw = ptStart_CharacterCreate_Sub;
 	AreaW_CharacterCreate_Sub = DrawBorderWindow(&ptCur_Draw, false, nLen_CharacterCreate_Sub, nLines_CharacterCreate_Sub);
+	// 文字描画範囲取得
+	AreaT_CharacterCreate_Sub = Area_Inside_BorderWindow(&AreaW_CharacterCreate_Sub);
+
+	for (i = 0; i < nAdd; i++)
+	{
+		// ----------
+		// マスターメッセージ　表示内容更新
+		// ---------
+		// 現在位置をマスタメッセージリストへ
+		pCur_Str = pTextList_Master_MessageMaster;
+		// 空行追加
+		pCur_Str = StringList_Add(pCur_Str, "", true);
+		// メッセージ追加
+		pCur_Str = StringList_Add_Blank(pCur_Str, true);
+		sprintf(pCur_Str->szText, "%2d　ばんめの　おなかまは　どなたに　なさいますか", i + 1);
+		// メッセージリスト(表示用）に、メッセージサイズにリサイズして代入
+		pTextList_Display_MessageMaster =
+			ResizeStringList_By_tArea(pTextList_Display_MessageMaster, pTextList_Master_MessageMaster, AreaT_MessageMaster, START_FROM_LAST, 1);
+		// メッセージ表示エリアをクリア
+		ClearArea(&AreaT_MessageMaster);
+		// メッセージ表示
+		DrawTextList_Plain(AreaT_MessageMaster, pTextList_Display_MessageMaster, &ptCur_Draw);
+
+		// 
+
+		getchar();
+	}
+	
+
 	
 	// --------------------
 	// 後処理
